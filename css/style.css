@@ -364,14 +364,14 @@ button {
 }
 
 .red_bt a {
-    width: 40%;
+    width: 100%;
     float: left;
     font-size: 18px;
     color: #010101;
     background-color: #f1f1f1;
     border-radius: 20px;
     text-align: center;
-    padding: 15px 0px;
+    padding: 15px;
 }
 
 .red_bt a {
