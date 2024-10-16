@@ -176,7 +176,7 @@
          <!-- gifts section start -->
          <div id="sanpham" class="gifts_section layout_padding">
             <div class="container">
-               <h1 class="ourgifts_text">Các sản phẩm của chúng mình</h1>
+               <h1 class="ourgifts_text">CÁC SẢN PHẨM CỦA CHÚNG MÌNH</h1>
                <p class="lorem_text">Với đợt mở bán lần này chúng mình mang đến cho cả nhà hàng loạt sản phẩm hoa handmade, nến và nhiều combo hấp dẫn.</p>
                <div id="target_section" class="gifts_section_2">
                   <div class="row">
@@ -297,28 +297,6 @@
                <!-- Đoạn mã iframe được nhúng từ Google Form -->
                <iframe src="https://forms.gle/Mj9YRCudKst37ndb7" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
            </div>
-           
-   
-            <!-- <div class="about_padding">
-   
-                
-       
-               <div class="shop_section layout_padding">
-                  <div class="row">
-                     <div class="col-md-6">
-                        <div class="shop_img"><img src="images/img-7.png"></div>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="shop_taital">
-                           <h1 class="shop_text">Our Shop</h1>
-                           <p class="ipsum_text">irst true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore alw</p>
-                           <p class="ipsum_text">irst true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore alw</p>
-                           <div class="red_more_bt"><a href="#">Read More</a></div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div> -->
          </div>
          
          <!-- about section start -->
@@ -392,5 +370,26 @@
          document.getElementById("myNav").style.width = "0%";
          }
       </script>
+
+      <script>
+         // Kích hoạt tính năng vuốt cho carousel
+         $(document).ready(function() {
+         $("#my_Controls").on("touchstart", function(event){
+            var xClick = event.originalEvent.touches[0].pageX;
+            $(this).one("touchmove", function(event){
+               var xMove = event.originalEvent.touches[0].pageX;
+               if( Math.floor(xClick - xMove) > 5 ){ 
+                  $(this).carousel('next'); // Vuốt sang trái, chuyển sang slide tiếp theo
+               }
+               else if( Math.floor(xClick - xMove) < -5 ){
+                  $(this).carousel('prev'); // Vuốt sang phải, chuyển về slide trước đó
+               }
+            });
+            $("#my_Controls").on("touchend", function(){
+               $(this).off("touchmove");
+            });
+         });
+         });
+         </script>
    </body>
 </html>

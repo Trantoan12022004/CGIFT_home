@@ -85,47 +85,70 @@
 /*------------------------------------------------------------------- 599px x 280px ---------------------------------------------------------------------*/
 
 @media only screen and (min-width: 280px) and (max-width: 599px) {
+
+    /* Điều chỉnh padding-bottom của giỏ hàng thành 5px để giảm khoảng trống dưới giỏ hàng trên màn hình nhỏ */
     .cart-content-right {
         padding-bottom: 5px;
     }
+
+    /* Bỏ toàn bộ padding cho tất cả các cột trong .row của .megamenu */
     .megamenu>.row [class*="col-"] {
         padding: 0px;
     }
+
+    /* Điều chỉnh padding trái/phải của mục .men-cat trong megamenu, giúp nội dung hiển thị tốt trên màn hình nhỏ */
     .menu-area-main .megamenu .men-cat {
         padding: 0px 15px;
     }
+
+    /* Điều chỉnh padding trái/phải của mục .women-cat trong megamenu, giúp nội dung hiển thị tốt trên màn hình nhỏ */
     .menu-area-main .megamenu .women-cat {
         padding: 0px 15px;
     }
+
+    /* Điều chỉnh padding trái/phải của mục .el-cat trong megamenu, giúp nội dung hiển thị tốt trên màn hình nhỏ */
     .menu-area-main .megamenu .el-cat {
         padding: 0px 15px;
     }
+
+    /* Thiết lập padding cho các liên kết trong mean-nav và điều chỉnh chiều rộng để các liên kết vừa khít trên màn hình nhỏ */
     .mean-container .mean-nav ul li a {
-        padding: 1em 4%;
-        width: 92%;
+        padding: 1em 4%; /* Padding trên/dưới 1em, trái/phải 4% */
+        width: 92%;      /* Chiều rộng của liên kết là 92% */
     }
+
+    /* Điều chỉnh padding và chiều rộng cho các liên kết con bên trong mean-nav để chúng hiển thị hợp lý trên màn hình nhỏ */
     .mean-container .mean-nav ul li li a {
-        width: 90%;
-        padding: 1em 5%;
+        width: 90%;     /* Chiều rộng của liên kết con là 90% */
+        padding: 1em 5%; /* Padding trên/dưới 1em, trái/phải 5% */
     }
+
+    /* Đặt padding và chiều rộng cho các liên kết trong danh sách megamenu-categories để hiển thị nội dung hợp lý trên màn hình nhỏ */
     .mean-container .sub-full.megamenu-categories ol li a {
-        padding: 5px 0px;
-        text-transform: capitalize;
-        width: 100%;
+        padding: 5px 0px;      /* Padding trên/dưới 5px, trái/phải 0px */
+        text-transform: capitalize; /* Viết hoa chữ cái đầu tiên của mỗi từ */
+        width: 100%;           /* Chiều rộng 100% */
     }
+
+    /* Đặt lại các thuộc tính cho liên kết trong women-box để loại bỏ các kiểu viền và căn chỉnh trên màn hình nhỏ */
     .megamenu .sub-full.megamenu-categories .women-box .banner-up-text a {
-        width: auto;
-        border: none;
-        float: none;
+        width: auto;      /* Chiều rộng tự động */
+        border: none;     /* Không có viền */
+        float: none;      /* Không nổi bên trái/phải */
     }
+
+    /* Đặt chiều cao cho menu chính và cho phép cuộn theo chiều dọc trên màn hình nhỏ */
     .menu-area-main {
-        height: 45px;
-        overflow-y: auto;
+        height: 45px;     /* Chiều cao cố định 45px */
+        overflow-y: auto; /* Cho phép cuộn theo chiều dọc nếu nội dung quá dài */
     }
+
+    /* Đặt lại vị trí cho các liên kết mở rộng (expand) trong mean-nav trên màn hình nhỏ */
     .mean-container .mean-nav ul li a.mean-expand {
-        top: 0;
+        top: 0; /* Căn chỉnh phần tử ở phía trên cùng */
     }
 }
+
 
 @media (min-width: 992px) and (max-width: 1199px) {
     .titlepage h2::after {
@@ -591,7 +614,7 @@
     }
     .red_bt a {
         width: 100%;
-        padding: 10px 0px;
+        padding: 10px;
         margin-bottom: 20px;
     }
     .red_more_bt a {
@@ -839,7 +862,7 @@
     }
     .red_bt a {
         font-size: 16px;
-        padding: 10px 0px;
+        padding: 10px;
         margin-bottom: 20px;
     }
     .redmore_bt a {

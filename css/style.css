@@ -334,7 +334,7 @@ button {
 }
 
 .banner_taital {
-    width: 80%;
+    width: 90%;
     float: right;
     margin-top: 145px;
 }
@@ -443,22 +443,23 @@ button {
 .gifts_section {
     width: 100%;
     float: left;
-    background-image: url(../images/gift-bg.png);
+    background-image: url(../images/sanpham_bg.png);
     height: auto;
     background-size: cover;
     position: relative;
-    left: 20px;
+    /* left: 20px; */
 }
 
 .ourgifts_text {
     width: 95%;
     float: left;
-    color: #ffffff;
+    color: #000000;
     font-size: 50px;
     margin-left: 0px;
     text-align: center;
     font-weight: bold;
-    margin-top: 150px;
+    margin-top: 100px;
+    /* font-weight: bold; */
 }
 
 form-container {
@@ -480,8 +481,8 @@ iframe {
 .lorem_text {
     width: 100%;
     float: left;
-    font-size: 16px;
-    color: #ffffff;
+    font-size: 20px;
+    color: #000000;
     text-align: center;
     margin-left: 0px;
 }
@@ -513,10 +514,6 @@ iframe {
     height: 150px;
     position: relative;
     top: -85px;
-    display: flex; /* Thêm display: flex */
-    flex-direction: column; /* Xếp các phần tử con theo chiều dọc */
-    justify-content: center; /* Căn giữa theo chiều dọc */
-    align-items: center; /* Căn giữa theo chiều ngang */
     text-align: center; /* Đảm bảo văn bản được căn giữa */
 }
 
@@ -867,9 +864,9 @@ iframe {
 
 #my_Controls a.carousel-control-prev {
     position: absolute;
-    left: 93%;
-    top: 88%;
-    background-color: #b625e8;
+    left: 95%;
+    top: 50%;
+    background-color: #ffffff;
     color: #000;
 }
 
@@ -890,8 +887,8 @@ iframe {
 
 #my_Controls a.carousel-control-next {
     position: absolute;
-    left: 88%;
-    top: 88%;
+    left: 0%;
+    top: 50%;
     background-color: #010101;
 }
 
