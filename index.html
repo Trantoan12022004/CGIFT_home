@@ -180,27 +180,35 @@
                <p class="lorem_text">Với đợt mở bán lần này chúng mình mang đến cho cả nhà hàng loạt sản phẩm hoa handmade, nến và nhiều combo hấp dẫn.</p>
                <div id="target_section" class="gifts_section_2">
                   <div class="row">
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="product1">
                         <div class="img_5"><img src="images/nến/6.png"></div>
                         <div class="volis_main">
-                           <div class="volis_2">
-                              <h1 class="volis_text">COMBO-1: <span style="color: #1cb2d2;">200k</span></h1>
-                              <div class="red_bt"><a href="#thanhtoan">Đặt Hàng</a></div>
-                           </div>
+                            <div class="volis_2">
+                                <h1 class="volis_text">COMBO-1: <span style="color: #1cb2d2;">200k</span></h1>
+                                <div class="soluong_dathang">
+                                    <input type="number" id="quantity_combo1" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                                    <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('COMBO-1', 200, 'quantity_combo1')">Đặt Hàng</a></div>
+                                </div>
+                            </div>
                         </div>
-                     </div>
+                    </div>
+                    
 
-                     <div class="col-md-6">
-                        <div class="img_5"><img src="images/nến/7.png"></div>
-                        <div class="volis_main">
-                           <div class="volis_2">
-                              <h1 class="volis_text">COMBO-2: <span style="color: #1cb2d2;">250k</span></h1>
-                              <div class="red_bt"><a href="#thanhtoan">Đặt Hàng</a></div>
-                           </div>
-                        </div>
+                    <div class="col-md-6" id="product2">
+                     <div class="img_5"><img src="images/nến/6.png"></div>
+                     <div class="volis_main">
+                         <div class="volis_2">
+                             <h1 class="volis_text">COMBO-1: <span style="color: #1cb2d2;">200k</span></h1>
+                           <div class="soluong_dathang">
+                              <input type="number" id="quantity_combo1" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                              <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('COMBO-1', 200, 'quantity_combo1')">Đặt Hàng</a></div>
+                          </div>
+                         </div>
                      </div>
+                 </div>
+                 
 
-                     <div class="col-md-6">
+                     <!-- <div class="col-md-6">
                         <div class="img_5"><img src="images/nến/8.png"></div>
                         <div class="volis_main">
                            <div class="volis_2">
@@ -278,7 +286,7 @@
                               <div class="red_bt"><a href="#thanhtoan">Đặt Hàng</a></div>
                            </div>
                         </div>
-                     </div>
+                     </div> -->
 
                   </div>
                   <div class="red_bt"><a href="#thanhtoan">Đặt Hàng</a></div>
@@ -287,18 +295,59 @@
          </div>
          <!-- gifts section end -->
 
-         <div id="thanhtoan" class="shop_section_start layout_padding">
+         <!-- <div id="thanhtoan" class="shop_section_start layout_padding">
             <div class="container">
                <h1 class="center_text">THANH <span style="color: #e9bbeb;">TOÁN</span></h1>
             </div>
          </div>
          <div class="container-fluid">
             <div class="form-container">
-               <!-- Đoạn mã iframe được nhúng từ Google Form -->
                <iframe src="https://forms.gle/Mj9YRCudKst37ndb7" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
            </div>
-         </div>
+         </div> -->
          
+
+         <div id="thanhtoan" class="shop_section_start layout_padding">
+            <div class="container">
+                <h1 class="center_text">THANH <span style="color: #e9bbeb;">TOÁN</span></h1>
+                <form id="paymentForm">
+                    <div>
+                        <label for="fullName">Họ Tên:</label>
+                        <input type="text" id="fullName" required>
+                    </div>
+                    <div>
+                        <label for="phone">Số Điện Thoại:</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div>
+                        <label for="address">Địa Chỉ:</label>
+                        <input type="text" id="address" required>
+                    </div>
+                    <div>
+                        <label>Mặt Hàng:</label>
+                        <ul id="cartItems"></ul> <!-- Sẽ được cập nhật từ giỏ hàng -->
+                    </div>
+                    <div>
+                        <label for="totalAmount">Số Tiền Cần Thanh Toán:</label>
+                        <input type="text" id="totalAmount" readonly>
+                    </div>
+                    <div>
+                        <label for="paymentMethod">Hình Thức Thanh Toán:</label>
+                        <select id="paymentMethod" required>
+                            <option value="cash">Tiền mặt</option>
+                            <option value="card">Thẻ</option>
+                            <option value="bank_transfer">Chuyển khoản</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="note">Ghi Chú:</label>
+                        <textarea id="note"></textarea>
+                    </div>
+                    <button type="button" onclick="submitOrder()">Thanh Toán</button>
+                </form>
+            </div>
+        </div>
+        
          <!-- about section start -->
          <div id="about" class="container">
             <div class="about_section layout_padding">
@@ -370,7 +419,7 @@
          document.getElementById("myNav").style.width = "0%";
          }
       </script>
-
+<!-- hàm vuốt màn hình trên điện thoại -->
       <script>
          // Kích hoạt tính năng vuốt cho carousel
          $(document).ready(function() {
@@ -391,5 +440,116 @@
          });
          });
          </script>
+<!-- hàm lưu thông tin vào giỏ hàng -->
+<script>
+   // Mảng chứa thông tin giỏ hàng
+   let cart = [];
+
+   function addToCart(productName, priceString, quantityId) {
+       // Lấy số lượng sản phẩm từ ô nhập
+       let quantity = document.getElementById(quantityId).value;
+
+       // Chuyển đổi giá từ string sang số và nhân với 1000
+       let price = parseInt(priceString) * 1000; // Chuyển "200" thành 200000 (nhân với 1000)
+
+       // Kiểm tra số lượng sản phẩm > 0
+       if (quantity > 0) {
+           // Thêm sản phẩm vào giỏ hàng
+           cart.push({
+               productName: productName,
+               price: price,
+               quantity: quantity,
+               totalPrice: price * quantity
+           });
+
+           // Chuyển đến phần thanh toán
+           updatePaymentForm();
+           window.location.href = "#thanhtoan";
+       } else {
+           alert("Vui lòng nhập số lượng hợp lệ!");
+       }
+   }
+</script>
+
+<!-- cập nhập thông tin sản phẩm vào phần thanh toán -->
+<script>
+   function updatePaymentForm() {
+       let cartItemsList = document.getElementById('cartItems');
+       let totalAmount = 0;
+
+       // Xóa danh sách hiện tại
+       cartItemsList.innerHTML = "";
+
+       // Thêm các sản phẩm từ giỏ hàng vào danh sách
+       cart.forEach(item => {
+           let listItem = document.createElement('li');
+           listItem.textContent = `${item.productName} - Số lượng: ${item.quantity} - Giá 1 sản phẩm: ${(item.price.toLocaleString())} - Giá: ${(item.totalPrice).toLocaleString()} VND`;
+           cartItemsList.appendChild(listItem);
+
+           // Cập nhật tổng tiền
+           totalAmount += item.totalPrice;
+       });
+
+       // Hiển thị tổng số tiền cần thanh toán
+       document.getElementById('totalAmount').value = totalAmount.toLocaleString() + ' VND';
+   }
+</script>
+
+
+<script>
+   function submitOrder() {
+       // Lấy thông tin từ form
+       let fullName = document.getElementById('fullName').value;
+       let phone = document.getElementById('phone').value;
+       let address = document.getElementById('address').value;
+       let paymentMethod = document.getElementById('paymentMethod').value;
+       let note = document.getElementById('note').value;
+   
+       // Lấy thông tin giỏ hàng (sản phẩm và số lượng)
+       let items = cart.map(item => `${item.productName} (Số lượng: ${item.quantity})`).join(', ');
+       let totalAmount = document.getElementById('totalAmount').value;
+   
+       // Kiểm tra nếu các trường không được nhập
+       if (!fullName || !phone || !address || !paymentMethod) {
+           alert("Vui lòng điền đầy đủ thông tin.");
+           return;
+       }
+   
+       // Đối tượng dữ liệu để gửi lên Google Sheets
+       let orderData = {
+           fullName: fullName,
+           phone: phone,
+           address: address,
+           items: items,
+           totalAmount: totalAmount,
+           paymentMethod: paymentMethod,
+           note: note
+       };
+   
+       // Gửi dữ liệu bằng fetch API tới Google Apps Script Web App
+       fetch("https://script.google.com/macros/s/AKfycbzfWNwhwNwBxpmdFAMMw5X5Y5kDSXm4sBsmYCnf2ZX-T-dCs-4vGRDOh-IzSx7GVwhd/exec", {  // Thay YOUR_SCRIPT_URL bằng URL của Google Apps Script Web App
+           method: "POST",
+           body: JSON.stringify(orderData),
+           headers: {
+               'Content-Type': 'application/json'
+           }
+       })
+       .then(response => response.json())
+       .then(data => {
+           if (data.result === 'success') {
+               alert("Đơn hàng của bạn đã được gửi thành công!");
+           } else {
+               alert("Có lỗi xảy ra, vui lòng thử lại.");
+           }
+       })
+       .catch(error => {
+           console.error('Lỗi khi gửi đơn hàng:', error);
+           alert("Đã có lỗi xảy ra, vui lòng thử lại.");
+       });
+   }
+   </script>
+   
+
+
    </body>
 </html>

@@ -527,6 +527,40 @@ iframe {
     float: none; /* Bỏ float để tránh gây lỗi */
 }
 
+
+.volis_2 .soluong_dathang{
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Chia làm 2 cột bằng nhau */
+    gap: 20px; /* Khoảng cách giữa hai đối tượng */
+}
+
+.volis_2 .soluong_dathang #quantity_combo1{
+    width: 100%;
+    /* float: right; */
+    padding: 15px;
+    background-color: #f1f1f1;
+    font-size: 18px;
+    border-radius: 20px;
+    color: #000;
+    text-align: center;
+}
+
+
+.red_bt a {
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    color: #010101;
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    text-align: center;
+    padding: 15px;
+}
+
+.red_bt a {
+    color: #010101;
+    background-color: #f1f1f1;
+}
 .there_text {
     width: 100%;
     float: left;
