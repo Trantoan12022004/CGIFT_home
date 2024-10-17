@@ -586,6 +586,13 @@ const paymentMethod = document.getElementById('paymentMethod').value;
 const totalAmount = document.getElementById('totalAmount').value;
 const note = document.getElementById('note').value;
 
+// Vô hiệu hóa nút thanh toán sau khi nhấn
+let submitButton = document.querySelector('button[onclick="submitOrder()"]');
+    if (submitButton.disabled) {
+        return;  // Ngăn việc nhấn lại nút nếu nó đã bị vô hiệu hóa
+    }
+    submitButton.disabled = true;  // Vô hiệu hóa nút sau lần nhấn đầu tiên
+
 
 // Tạo đối tượng chứa thông tin thanh toán
 const orderData = {
