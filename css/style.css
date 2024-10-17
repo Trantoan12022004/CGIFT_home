@@ -527,6 +527,82 @@ iframe {
     float: none; /* Bỏ float để tránh gây lỗi */
 }
 
+
+.volis_2 .soluong_dathang{
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Chia làm 2 cột bằng nhau */
+    gap: 20px; /* Khoảng cách giữa hai đối tượng */
+}
+
+.volis_2 .soluong_dathang1{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* Chia làm 2 cột bằng nhau */
+    gap: 10px; /* Khoảng cách giữa hai đối tượng */
+}
+
+.volis_2 .soluong_dathang #quantity_combo1,
+.volis_2 .soluong_dathang #quantity_combo2,
+.volis_2 .soluong_dathang #quantity_combo3,
+.volis_2 .soluong_dathang #quantity_combo4,
+.volis_2 .soluong_dathang #quantity_combo5,
+.volis_2 .soluong_dathang #quantity_combo6,
+.volis_2 .soluong_dathang #quantity_combo7,
+.volis_2 .soluong_dathang #quantity_combo8,
+.volis_2 .soluong_dathang #quantity_combo9,
+.volis_2 .soluong_dathang #quantity_combo10
+{
+    width: 100%;
+    /* float: right; */
+    padding: 15px;
+    background-color: #f1f1f1;
+    font-size: 18px;                                                     
+    border-radius: 20px;
+    color: #000;
+    text-align: center;
+}
+
+
+ 
+.volis_2 .soluong_dathang1 #quantity_combo5
+{
+    width: 100%;
+    /* float: right; */
+    padding: 15px;
+    background-color: #f1f1f1;
+    font-size: 18px;
+    border-radius: 20px;
+    color: #000;
+    text-align: center;
+}
+
+.custom-select {
+    max-width: 120px;
+    width: 100%;
+    height: 86%;
+    padding: 10px;
+    font-size: 18px;
+    /* border: 2px solid #1cb2d2; */
+    border-radius: 20px;
+    background-color: #f1f1f1;
+}
+
+.red_btn a {
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    color: #010101;
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    text-align: center;
+    padding: 15px;
+}
+
+.red_btn a {
+    color: #010101;
+    background-color: #f1f1f1;
+}
+
+
 .there_text {
     width: 100%;
     float: left;
@@ -892,22 +968,94 @@ iframe {
     background-color: #010101;
 }
 
-#my_Controls .carousel-control-prev,
-#my_Controls .carousel-control-next {
-    width: 65px;
-    height: 65px;
-    background: #fff;
-    opacity: 1;
-    font-size: 30px;
-    color: #091e30;
-    border-radius: 100%;
-}
-
 .carousel-control-next-icon {
     background-image: url(../images/left-arrow.png);
 }
 
-.banner_main {
-    width: 100%;
-    float: left;
+/* Container và Layout cho phần thanh toán */
+.shop_section_start.layout_padding .container {
+    /* max-width: 600px; */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Tiêu đề */
+.shop_section_start.layout_padding h1.center_text {
+    text-align: center;
+    color: #e9bbeb;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+/* Form Group */
+.shop_section_start.layout_padding .form-group {
+    margin-bottom: 20px;
+}
+
+.shop_section_start.layout_padding .form-group label {
+    font-size: 1.1em;
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.shop_section_start.layout_padding .form-group input,
+.shop_section_start.layout_padding .form-group select,
+.shop_section_start.layout_padding .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ffe4e1; /* Màu hồng nhạt */
+    transition: border-color 0.3s;
+}
+
+/* Hiệu ứng khi người dùng focus vào input */
+.shop_section_start.layout_padding .form-group input:focus,
+.shop_section_start.layout_padding .form-group select:focus,
+.shop_section_start.layout_padding .form-group textarea:focus {
+    outline: none;
+    border-color: #ff99cc; /* Màu hồng nhạt đậm hơn khi focus */
+}
+
+/* Nút submit */
+.shop_section_start.layout_padding button {
+    width: 100%;
+    padding: 15px;
+    background-color: #ff99cc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.shop_section_start.layout_padding button:hover {
+    background-color: #e68a99; /* Màu đậm hơn khi hover */
+}
+
+/* Các trường bắt buộc */
+.shop_section_start.layout_padding .required {
+    color: red;
+}
+
+/* Thiết lập responsive cho mobile */
+@media (max-width: 600px) {
+    .shop_section_start.layout_padding h1.center_text {
+        font-size: 2em;
+    }
+
+    .shop_section_start.layout_padding .container {
+        padding: 15px;
+    }
+
+    .shop_section_start.layout_padding button {
+        font-size: 1em;
+    }
+}
+

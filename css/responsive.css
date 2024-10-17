@@ -1,4 +1,3 @@
-
 /*--------------------------------------------------------------------- File Name: responsive.css ---------------------------------------------------------------------*/
 
 
@@ -866,6 +865,12 @@
         padding: 10px;
         margin-bottom: 20px;
     }
+
+    #quantity_combo1{
+        font-size: 16px;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
     .redmore_bt a {
         padding: 10px 0px;
     }
@@ -874,4 +879,17 @@
         font-size: 18px;
         padding: 10px 0px;
     }
+}
+
+@media (max-width: 600px) {
+    .custom {
+        height: 53%;
+        padding: 12px !important;   /* Giảm padding để input trông gọn gàng hơn */
+        font-size: 12px;
+    }
+    .custom-select{
+        height: 53%;
+        padding: 12px !important;  
+    }
+
 }

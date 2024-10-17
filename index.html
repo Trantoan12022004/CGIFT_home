@@ -180,125 +180,240 @@
                <p class="lorem_text">Với đợt mở bán lần này chúng mình mang đến cho cả nhà hàng loạt sản phẩm hoa handmade, nến và nhiều combo hấp dẫn.</p>
                <div id="target_section" class="gifts_section_2">
                   <div class="row">
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="product1">
                         <div class="img_5"><img src="images/nến/6.png"></div>
                         <div class="volis_main">
-                           <div class="volis_2">
-                              <h1 class="volis_text">COMBO-1: <span style="color: #1cb2d2;">200k</span></h1>
-                              <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
-                           </div>
+                            <div class="volis_2">
+                                <h1 class="volis_text">COMBO-1: <span style="color: #1cb2d2;">200k</span></h1>
+                                <div class="soluong_dathang">
+                                    <input type="number" id="quantity_combo1" class="custom" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                                    <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('COMBO-1', 200, 'quantity_combo1')">Đặt Hàng</a></div>
+                                </div>
+                            </div>
                         </div>
-                     </div>
+                    </div>
+                    
 
-                     <div class="col-md-6">
-                        <div class="img_5"><img src="images/nến/7.png"></div>
-                        <div class="volis_main">
-                           <div class="volis_2">
-                              <h1 class="volis_text">COMBO-2: <span style="color: #1cb2d2;">250k</span></h1>
-                              <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
-                           </div>
-                        </div>
+                    <div class="col-md-6" id="product2">
+                     <div class="img_5"><img src="images/nến/7.png"></div>
+                     <div class="volis_main">
+                         <div class="volis_2">
+                             <h1 class="volis_text">COMBO-2: <span style="color: #1cb2d2;">250k</span></h1>
+                           <div class="soluong_dathang">
+                              <input type="number" id="quantity_combo2" class="custom" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                              <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('COMBO-2', 250, 'quantity_combo2')">Đặt Hàng</a></div>
+                          </div>
+                         </div>
                      </div>
+                 </div>
+                 
 
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="product3">
                         <div class="img_5"><img src="images/nến/8.png"></div>
                         <div class="volis_main">
                            <div class="volis_2">
                               <h1 class="volis_text">COMBO-3: <span style="color: #1cb2d2;">290k</span></h1>
-                              <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
+                              <div class="soluong_dathang">
+                                 <input type="number" id="quantity_combo3" class="custom" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                                 <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('COMBO-3', 290, 'quantity_combo3')">Đặt Hàng</a></div>
+                             </div>
                            </div>
                         </div>
                      </div>
 
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="product4">
                         <div class="img_5"><img src="images/nến/9.png"></div>
                         <div class="volis_main">
                            <div class="volis_2">
                               <h1 class="volis_text">CUSTOM: <span style="color: #1cb2d2;">Tư vấn chi tiết</span></h1>
-                              <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
+                              <div class="soluong_dathang">
+                                 <input type="number" id="quantity_combo4" class="custom" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                                 <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('CUSTOM - liên hệ trực tiếp fanpage để nhận tư vấn', 000, 'quantity_combo4')">Đặt Hàng</a></div>
+                             </div>
+                              <!-- <div class="red_bt"><a href="#thanhtoan">Đặt Hàng</a></div> -->
                            </div>
                         </div>
                      </div>
 
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="product5">
+                        <div class="img_5"><img src="images/nến/10.png"></div>
+                        <div class="volis_main">
+                            <div class="volis_2">
+                                <h1 class="volis_text">HOA LẺ: <span style="color: #1cb2d2;">50/70/100k</span></h1>
+                                <div class="soluong_dathang1">
+                                    <input type="number" id="quantity_combo5" class="custom" class="custom-input" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                    
+                                    <!-- Lựa chọn size và màu sắc -->
+                                    <select id="sizeColorCombo5" class="custom-select" style="margin-bottom: 10px;">
+                                       <option value="red-small">Chọn loại</option>
+                                        <option value="red-small">Sao,Nhỏ</option>
+                                        <option value="red-medium">Sao,Vừa</option>
+                                        <option value="red-large">Sao,To</option>
+                                        <option value="pink-small">G.Nhún,Nhỏ</option>
+                                        <option value="pink-medium">G.Nhún,Vừa</option>
+                                        <option value="pink-large">G.Nhún,To</option>
+                                    </select>
+                    
+                                    <!-- Nút đặt hàng -->
+                                    <div class="red_bt"><a href="#thanhtoan" onclick="addToCartCombo5()">Đặt Hàng</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                     <!-- <div class="col-md-6" id="product5">
+
                         <div class="img_5"><img src="images/nến/10.png"></div>
                         <div class="volis_main">
                            <div class="volis_2">
                               <h1 class="volis_text">HOA LẺ: <span style="color: #1cb2d2;">50/70/100k</span></h1>
-                              <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
+                              <div class="soluong_dathang">
+                                 <input type="number" id="quantity_combo5" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                                 <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('HOA LẺ', 200, 'quantity_combo5')">Đặt Hàng</a></div>
+                             </div>
                            </div>
                         </div>
-                     </div>
+                     </div> -->
 
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="product6">
+
                         <div class="img_5"><img src="images/nến/1.png"></div>
                         <div class="volis_main">
                            <div class="volis_2">
                               <h1 class="volis_text">BLOOMING HEART: <span style="color: #1cb2d2;">190k</span></h1>
-                              <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
+                              <div class="soluong_dathang">
+                                 <input type="number" id="quantity_combo6" class="custom" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                                 <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('BLOOMING HEART', 190, 'quantity_combo6')">Đặt Hàng</a></div>
+                             </div>
+                              <!-- <div class="red_bt"><a href="#thanhtoan">Đặt Hàng</a></div> -->
                            </div>
                         </div>
                      </div>
 
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="product7">
+
                         <div class="img_5"><img src="images/nến/2.png"></div>
                         <div class="volis_main">
                            <div class="volis_2">
                               <h1 class="volis_text">HOPE: <span style="color: #1cb2d2;">160k</span></h1>
-                              <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
+                              <div class="soluong_dathang">
+                                 <input type="number" id="quantity_combo7" class="custom" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                                 <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('HOPE', 160, 'quantity_combo7')">Đặt Hàng</a></div>
+                             </div>
+                              <!-- <div class="red_bt"><a href="#thanhtoan">Đặt Hàng</a></div> -->
                            </div>
                         </div>
                      </div>
 
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="product8">
                         <div class="img_5"><img src="images/nến/3.png"></div>
                         <div class="volis_main">
                            <div class="volis_2">
                               <h1 class="volis_text">GREEN: <span style="color: #1cb2d2;">200k</span></h1>
-                              <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
+                              <div class="soluong_dathang">
+                                 <input type="number" id="quantity_combo8" class="custom" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                                 <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('GREEN', 200, 'quantity_combo8')">Đặt Hàng</a></div>
+                             </div>
+                              <!-- <div class="red_bt"><a href="#thanhtoan">Đặt Hàng</a></div> -->
                            </div>
                         </div>
                      </div>
 
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="product9">
+
                         <div class="img_5"><img src="images/nến/4.png"></div>
                         <div class="volis_main">
                            <div class="volis_2">
-                              <h1 class="volis_text">HAPPY DAISY: <span style="color: #1cb2d2;">190k</span></h1>
-                              <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
+                              <h1 class="volis_text">HAPPY DAISY: <span style="color: #1cb2d2;">150k</span></h1>
+                              <div class="soluong_dathang">
+                                 <input type="number" id="quantity_combo9" class="custom" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                                 <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('HAPPY DAISY', 190, 'quantity_combo9')">Đặt Hàng</a></div>
+                             </div>
+                              <!-- <div class="red_bt"><a href="#thanhtoan">Đặt Hàng</a></div> -->
                            </div>
                         </div>
                      </div>
 
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="product10">
                         <div class="img_5"><img src="images/nến/5.png"></div>
                         <div class="volis_main">
                            <div class="volis_2">
-                              <h1 class="volis_text">VINTAGE ROSE: <span style="color: #1cb2d2;">190k</span></h1>
-                              <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
+                              <h1 class="volis_text">VINTAGE ROSE: <span style="color: #1cb2d2;">150k</span></h1>
+                              <div class="soluong_dathang">
+                                 <input type="number" id="quantity_combo10" class="custom" min="0" placeholder="Số lượng" style="margin-bottom: 10px;">
+                                 <div class="red_bt"><a href="#thanhtoan" onclick="addToCart('VINTAGE ROSE', 190, 'quantity_combo10')">Đặt Hàng</a></div>
+                             </div>
+                              <!-- <div class="red_bt"><a href="#thanhtoan">Đặt Hàng</a></div> -->
                            </div>
                         </div>
                      </div>
 
                   </div>
-                  <div class="red_bt"><a href="https://forms.gle/46USu3K6NZB5Nxf78">Đặt Hàng</a></div>
+                  <div class="red_bt"><a href="#target_section">Các bạn có thể mua nhiều sản phẩm 1 lần và lưu ý khi điền số lượng mỗi sản phảm nhớ nhấn đặt hàng nhé!</a></div>
                </div>
             </div>
          </div>
          <!-- gifts section end -->
 
-         <div id="thanhtoan" class="shop_section_start layout_padding">
+         <!-- <div id="thanhtoan" class="shop_section_start layout_padding">
             <div class="container">
                <h1 class="center_text">THANH <span style="color: #e9bbeb;">TOÁN</span></h1>
             </div>
          </div>
          <div class="container-fluid">
             <div class="form-container">
-               <!-- Đoạn mã iframe được nhúng từ Google Form -->
                <iframe src="https://forms.gle/Mj9YRCudKst37ndb7" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
            </div>
-         </div>
+         </div> -->
          
+
+         <div id="thanhtoan" class="shop_section_start layout_padding">
+            <div class="container">
+                <h1 class="center_text">THANH <span style="color: #e9bbeb;">TOÁN</span></h1>
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="fullName">Họ Tên: <span class="required">*</span></label>
+                        <input type="text" id="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số Điện Thoại: <span class="required">*</span></label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Địa Chỉ: <span class="required">*</span></label>
+                        <input type="text" id="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderDate">Ngày Đặt Hàng:</label>
+                        <input type="date" id="orderDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mặt Hàng:</label>
+                        <ul id="cartItems"></ul> <!-- Sẽ được cập nhật từ giỏ hàng -->
+                    </div>
+                    <div class="form-group">
+                        <label for="totalAmount">Số Tiền Cần Thanh Toán:</label>
+                        <input type="text" id="totalAmount" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentMethod">Hình Thức Thanh Toán: <span class="required">*</span></label>
+                        <select id="paymentMethod" required>
+                            <option value="cash">Tiền mặt</option>
+                            <option value="card">Thẻ</option>
+                            <option value="bank_transfer">Chuyển khoản</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="note">Ghi Chú:</label>
+                        <textarea id="note"></textarea>
+                    </div>
+                    <button type="button" onclick="submitOrder()">Thanh Toán</button>
+                </form>
+            </div>
+        </div>
+        
+        
          <!-- about section start -->
          <div id="about" class="container">
             <div class="about_section layout_padding">
@@ -370,7 +485,7 @@
          document.getElementById("myNav").style.width = "0%";
          }
       </script>
-
+<!-- hàm vuốt màn hình trên điện thoại -->
       <script>
          // Kích hoạt tính năng vuốt cho carousel
          $(document).ready(function() {
@@ -391,5 +506,224 @@
          });
          });
          </script>
+<!-- hàm lưu thông tin vào giỏ hàng -->
+<script>
+   // Mảng chứa thông tin giỏ hàng
+   let cart = [];
+
+   function addToCart(productName, priceString, quantityId) {
+       // Lấy số lượng sản phẩm từ ô nhập
+       let quantity = document.getElementById(quantityId).value;
+
+       // Chuyển đổi giá từ string sang số và nhân với 1000
+       let price = parseInt(priceString) * 1000; // Chuyển "200" thành 200000 (nhân với 1000)
+
+       // Kiểm tra số lượng sản phẩm > 0
+       if (quantity > 0) {
+           // Thêm sản phẩm vào giỏ hàng
+           cart.push({
+               productName: productName,
+               price: price,
+               quantity: quantity,
+               totalPrice: price * quantity
+           });
+
+           // Chuyển đến phần thanh toán
+           updatePaymentForm();
+           window.location.href = "#thanhtoan";
+       } else {
+           alert("Vui lòng nhập số lượng hợp lệ!");
+       }
+   }
+</script>
+
+<!-- cập nhập thông tin sản phẩm vào phần thanh toán -->
+<script>
+   function updatePaymentForm() {
+       let cartItemsList = document.getElementById('cartItems');
+       let totalAmount = 0;
+
+       // Xóa danh sách hiện tại
+       cartItemsList.innerHTML = "";
+
+       // Thêm các sản phẩm từ giỏ hàng vào danh sách
+       cart.forEach(item => {
+           let listItem = document.createElement('li');
+           listItem.textContent = `${item.productName} - Số lượng: ${item.quantity} - Giá 1 sản phẩm: ${(item.price.toLocaleString())} - Giá: ${(item.totalPrice).toLocaleString()} VND`;
+           cartItemsList.appendChild(listItem);
+
+           // Cập nhật tổng tiền
+           totalAmount += item.totalPrice;
+       });
+
+       // Hiển thị tổng số tiền cần thanh toán
+       document.getElementById('totalAmount').value = totalAmount.toLocaleString() + ' VND';
+   }
+</script>
+   
+<script>
+   function submitOrder() {
+
+   let cartItemsString = ''; // Chuỗi để chứa các sản phẩm dưới dạng dễ đọc
+
+    // Duyệt qua mảng cart và tạo chuỗi thông tin sản phẩm
+    cart.forEach((item, index) => {
+        cartItemsString += `Sản phẩm ${index + 1}: ${item.productName}, - Số lượng: ${item.quantity}, Giá: ${item.price.toLocaleString()} VND, Tổng: ${item.totalPrice.toLocaleString()} VND`;
+    });
+
+// Lấy dữ liệu từ form
+const fullName = document.getElementById('fullName').value;
+const phone = document.getElementById('phone').value;
+const address = document.getElementById('address').value;
+const paymentMethod = document.getElementById('paymentMethod').value;
+const totalAmount = document.getElementById('totalAmount').value;
+const note = document.getElementById('note').value;
+
+// Tạo đối tượng chứa thông tin thanh toán
+const orderData = {
+    fullName: fullName,
+    phone: phone,
+    address: address,
+    paymentMethod: paymentMethod,
+    totalAmount: totalAmount,
+    note: note,
+    cartItems: cartItemsString // Đối tượng chứa thông tin các sản phẩm
+};
+
+// Gửi dữ liệu qua POST request đến Google Apps Script
+fetch('https://script.google.com/macros/s/AKfycbwwWsyOHENNZUom7vLBtvD-lU6EKy5CYVsYPeB-kGcftN0WfR5hexzp3lLcAH59A-n2Kg/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    body: JSON.stringify(orderData),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+.then(data => {
+    alert('Thanh toán thành công!');
+})
+.catch(error => {
+    console.error('Lỗi:', error);
+});
+}
+
+</script>
+
+<!-- hàn xử lí hàng có nhiều luowaj chọn -->
+
+<script>
+  function addToCartCombo5() {
+    // Lấy số lượng sản phẩm từ ô nhập
+    let quantity = document.getElementById('quantity_combo5').value;
+
+    // Lấy lựa chọn size và màu từ dropdown
+    let selectedOption = document.getElementById('sizeColorCombo5').value;
+
+    // Kiểm tra nếu chưa chọn đối tượng
+    if (selectedOption === "") {
+        alert('Vui lòng chọn đối tượng!');
+        return; // Dừng lại nếu chưa chọn
+    }
+
+    // Giá mặc định theo từng lựa chọn
+    let price;
+    let productName;
+
+    // Xác định giá và tên sản phẩm theo lựa chọn
+    switch (selectedOption) {
+        case 'red-small':
+            price = 50000;
+            productName = 'HOA SAO NHỎ';
+            break;
+        case 'red-medium':
+            price = 70000;
+            productName = 'HOA SAO VỪA';
+            break;
+        case 'red-large':
+            price = 100000;
+            productName = 'HOA SAO TO';
+            break;
+        case 'pink-small':
+            price = 50000;
+            productName = 'HOA GIẤY NHÚN NHỎ';
+            break;
+        case 'pink-medium':
+            price = 70000;
+            productName = 'HOA GIẤY NHÚN VỪA';
+            break;
+        case 'pink-large':
+            price = 100000;
+            productName = 'HOA GIẤY NHÚN TO';
+            break;
+        default:
+            alert('Vui lòng chọn đúng tùy chọn!');
+            return;
+    }
+
+    // Kiểm tra số lượng hợp lệ
+    if (quantity > 0) {
+        // Thêm sản phẩm vào giỏ hàng với tên kết hợp cả màu sắc và size
+        cart.push({
+            productName: productName,
+            price: price,
+            quantity: quantity,
+            totalPrice: price * quantity
+        });
+
+        // Cập nhật form thanh toán
+        updatePaymentForm();
+        window.location.href = "#thanhtoan"; // Chuyển đến phần thanh toán
+    } else {
+        alert("Vui lòng nhập số lượng hợp lệ!");
+    }
+}
+
+
+</script>
+
+
+<script>
+   function submitOrder() {
+    // Lấy các giá trị từ các trường
+    const fullName = document.getElementById('fullName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const orderDate = document.getElementById('orderDate').value;
+    const paymentMethod = document.getElementById('paymentMethod').value;
+    
+    // Kiểm tra từng trường bắt buộc
+    if (fullName === "") {
+        alert("Vui lòng nhập họ tên.");
+        return;
+    }
+
+    if (phone === "") {
+        alert("Vui lòng nhập số điện thoại.");
+        return;
+    }
+
+    if (address === "") {
+        alert("Vui lòng nhập địa chỉ.");
+        return;
+    }
+
+    if (orderDate === "") {
+        alert("Vui lòng chọn ngày đặt hàng.");
+        return;
+    }
+
+    if (paymentMethod === "") {
+        alert("Vui lòng chọn phương thức thanh toán.");
+        return;
+    }
+
+    // Nếu tất cả các trường đã được điền đầy đủ, tiến hành thanh toán
+    alert("Thanh toán thành công!");
+    // Gửi dữ liệu form hoặc thực hiện các hành động khác
+}
+
+</script>
+
+<!-- cắt ngắn văn bản trong thẻ option -->
    </body>
 </html>
