@@ -396,18 +396,25 @@
                         <label for="totalAmount">Số Tiền Cần Thanh Toán:</label>
                         <input type="text" id="totalAmount" readonly>
                     </div>
-                    <div class="form-group">
-                        <label for="paymentMethod">Hình Thức Thanh Toán: <span class="required">*</span></label>
-                        <select id="paymentMethod" required>
-                            <option value="cash">Tiền mặt</option>
-                            <option value="card">Thẻ</option>
-                            <option value="bank_transfer">Chuyển khoản</option>
-                        </select>
-                    </div>
+                    <!-- Phần mới: Thông tin chuyển khoản -->
+                     <div class="form-group shop_section_start layout_padding">
+                        <label>Thông tin chuyển khoản:</label>
+                        <p><strong>Số tài khoản:</strong> 1120 0511 11 PHAM DUC HAI TRIEU - Ngân hàng TECHCOMBANK</p>
+                        <p>Quét mã QR để chuyển khoản nhanh:</p>
+                        <img src="./images/QR.png" alt="QR Code" width="200px">
+                     </div>
                     <div class="form-group">
                         <label for="note">Ghi Chú:</label>
                         <textarea id="note"></textarea>
                     </div>
+                    <div class="form-group">
+                     <label for="paymentMethod">Hình Thức Thanh Toán: <span class="required">*</span></label>
+                     <select id="paymentMethod" required>
+                         <option value="cash">Tiền mặt</option>
+                         <option value="card">Thẻ</option>
+                         <option value="bank_transfer">Chuyển khoản</option>
+                     </select>
+                 </div>
                     <button type="button" onclick="submitOrder()">Thanh Toán</button>
                 </form>
             </div>

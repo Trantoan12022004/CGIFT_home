@@ -1059,3 +1059,15 @@ iframe {
     }
 }
 
+/* Phần thông tin chuyển khoản */
+.shop_section_start.layout_padding .form-group p {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.shop_section_start.layout_padding .form-group img {
+    display: block;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
