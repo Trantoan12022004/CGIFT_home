@@ -575,6 +575,30 @@ iframe {
     text-align: center;
 }
 
+.volis_2 .soluong_dathang1 #quantity_combo4
+{
+    width: 100%;
+    /* float: right; */
+    padding: 15px;
+    background-color: #f1f1f1;
+    font-size: 18px;
+    border-radius: 20px;
+    color: #000;
+    text-align: center;
+}
+
+.volis_2 .soluong_dathang1 #quantity_combo3
+{
+    width: 100%;
+    /* float: right; */
+    padding: 15px;
+    background-color: #f1f1f1;
+    font-size: 18px;
+    border-radius: 20px;
+    color: #000;
+    text-align: center;
+}
+
 .custom-select {
     max-width: 120px;
     width: 100%;
