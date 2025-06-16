@@ -5,31 +5,31 @@ let currentFilter = "all";
 // Global variables for new features
 let shippingFee = 0;
 let discountAmount = 0;
-let appliedDiscountCode = "";
+let appliedDiscountCode = '';
 
 // Discount codes database
 const discountCodes = {
-    SUMMER2025: {
-        type: "percentage",
+    'SUMMER2025': {
+        type: 'percentage',
         value: 10,
         maxDiscount: 50000,
         minOrder: 200000,
-        description: "Giảm 10% tối đa 50k cho đơn từ 200k",
+        description: 'Giảm 10% tối đa 50k cho đơn từ 200k'
     },
-    NEWCUSTOMER: {
-        type: "fixed",
+    'NEWCUSTOMER': {
+        type: 'fixed',
         value: 20000,
         maxDiscount: 20000,
         minOrder: 100000,
-        description: "Giảm 20k cho khách hàng mới",
+        description: 'Giảm 20k cho khách hàng mới'
     },
-    FREESHIP: {
-        type: "shipping",
+    'FREESHIP': {
+        type: 'shipping',
         value: 100,
         maxDiscount: 50000,
         minOrder: 150000,
-        description: "Miễn phí ship cho đơn từ 150k",
-    },
+        description: 'Miễn phí ship cho đơn từ 150k'
+    }
 };
 
 // Phân loại sản phẩm theo filter
@@ -204,7 +204,7 @@ function showNotification(message, type = "success") {
 }
 
 // Google Maps API key - thay thế bằng API key thực tế của bạn
-const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY";
+const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY';
 
 // Tính khoảng cách từ HUST (Đại học Bách khoa Hà Nội) bằng Google Maps
 async function calculateDistance(address) {
@@ -213,28 +213,28 @@ async function calculateDistance(address) {
         const hustLat = 21.0285;
         const hustLng = 105.8542;
         const hustAddress = "1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội, Việt Nam";
-
-        console.log("Calculating distance from HUST to:", address);
-
+        
+        console.log('Calculating distance from HUST to:', address);
+        
         // Sử dụng Google Geocoding API để lấy tọa độ chính xác
         const geocodeResult = await geocodeAddress(address);
-
+        
         if (!geocodeResult) {
-            throw new Error("Không thể tìm thấy địa chỉ");
+            throw new Error('Không thể tìm thấy địa chỉ');
         }
-
+        
         const { lat, lng, formattedAddress } = geocodeResult;
-
+        
         // Sử dụng Google Distance Matrix API để tính khoảng cách thực tế
         const distanceResult = await calculateDistanceMatrix(hustAddress, address);
-
+        
         if (distanceResult) {
             return {
                 distance: distanceResult.distance,
                 duration: distanceResult.duration,
                 foundAddress: formattedAddress,
                 coordinates: { lat, lng },
-                method: "google_distance_matrix",
+                method: 'google_distance_matrix'
             };
         } else {
             // Fallback: tính khoảng cách trực tiếp bằng Haversine
@@ -243,12 +243,13 @@ async function calculateDistance(address) {
                 distance: distance,
                 foundAddress: formattedAddress,
                 coordinates: { lat, lng },
-                method: "haversine_fallback",
+                method: 'haversine_fallback'
             };
         }
+        
     } catch (error) {
-        console.error("Error calculating distance:", error);
-
+        console.error('Error calculating distance:', error);
+        
         // Fallback cuối cùng: sử dụng OpenStreetMap
         return await calculateDistanceFallback(address);
     }
@@ -259,29 +260,29 @@ async function geocodeAddress(address) {
     try {
         const response = await fetch(
             `https://maps.googleapis.com/maps/api/geocode/json?` +
-                `address=${encodeURIComponent(address + ", Hà Nội, Việt Nam")}&` +
-                `region=vn&` +
-                `language=vi&` +
-                `key=${GOOGLE_MAPS_API_KEY}`
+            `address=${encodeURIComponent(address + ', Hà Nội, Việt Nam')}&` +
+            `region=vn&` +
+            `language=vi&` +
+            `key=${GOOGLE_MAPS_API_KEY}`
         );
-
+        
         const data = await response.json();
-
-        if (data.status === "OK" && data.results.length > 0) {
+        
+        if (data.status === 'OK' && data.results.length > 0) {
             const result = data.results[0];
             const location = result.geometry.location;
-
+            
             return {
                 lat: location.lat,
                 lng: location.lng,
-                formattedAddress: result.formatted_address,
+                formattedAddress: result.formatted_address
             };
         } else {
-            console.error("Geocoding failed:", data.status);
+            console.error('Geocoding failed:', data.status);
             return null;
         }
     } catch (error) {
-        console.error("Geocoding error:", error);
+        console.error('Geocoding error:', error);
         return null;
     }
 }
@@ -291,31 +292,35 @@ async function calculateDistanceMatrix(origin, destination) {
     try {
         const response = await fetch(
             `https://maps.googleapis.com/maps/api/distancematrix/json?` +
-                `origins=${encodeURIComponent(origin)}&` +
-                `destinations=${encodeURIComponent(destination + ", Hà Nội, Việt Nam")}&` +
-                `mode=driving&` +
-                `language=vi&` +
-                `region=vn&` +
-                `key=${GOOGLE_MAPS_API_KEY}`
+            `origins=${encodeURIComponent(origin)}&` +
+            `destinations=${encodeURIComponent(destination + ', Hà Nội, Việt Nam')}&` +
+            `mode=driving&` +
+            `language=vi&` +
+            `region=vn&` +
+            `key=${GOOGLE_MAPS_API_KEY}`
         );
-
+        
         const data = await response.json();
-
-        if (data.status === "OK" && data.rows.length > 0 && data.rows[0].elements.length > 0 && data.rows[0].elements[0].status === "OK") {
+        
+        if (data.status === 'OK' && 
+            data.rows.length > 0 && 
+            data.rows[0].elements.length > 0 &&
+            data.rows[0].elements[0].status === 'OK') {
+            
             const element = data.rows[0].elements[0];
-
+            
             return {
                 distance: element.distance.value / 1000, // Convert từ meters sang km
-                duration: element.duration.value / 60, // Convert từ seconds sang minutes
+                duration: element.duration.value / 60,   // Convert từ seconds sang minutes
                 distanceText: element.distance.text,
-                durationText: element.duration.text,
+                durationText: element.duration.text
             };
         } else {
-            console.error("Distance Matrix failed:", data.status);
+            console.error('Distance Matrix failed:', data.status);
             return null;
         }
     } catch (error) {
-        console.error("Distance Matrix error:", error);
+        console.error('Distance Matrix error:', error);
         return null;
     }
 }
@@ -325,52 +330,53 @@ async function calculateDistanceFallback(address) {
     try {
         const hustLat = 21.0285;
         const hustLng = 105.8542;
-
-        console.log("Using OpenStreetMap fallback...");
-
+        
+        console.log('Using OpenStreetMap fallback...');
+        
         const response = await fetch(
             `https://nominatim.openstreetmap.org/search?` +
-                `format=json&` +
-                `q=${encodeURIComponent(address + ", Hà Nội, Việt Nam")}&` +
-                `limit=3&` +
-                `addressdetails=1&` +
-                `countrycodes=vn&` +
-                `accept-language=vi`,
+            `format=json&` +
+            `q=${encodeURIComponent(address + ', Hà Nội, Việt Nam')}&` +
+            `limit=3&` +
+            `addressdetails=1&` +
+            `countrycodes=vn&` +
+            `accept-language=vi`,
             {
                 headers: {
-                    "User-Agent": "CTES-SIE-SHOP-Website",
-                },
+                    'User-Agent': 'CTES-SIE-SHOP-Website'
+                }
             }
         );
-
+        
         const data = await response.json();
-
+        
         if (data && data.length > 0) {
             // Tìm kết quả tốt nhất
             let bestResult = data[0];
             for (let result of data) {
-                if (result.display_name.toLowerCase().includes("hà nội") || result.display_name.toLowerCase().includes("hanoi")) {
+                if (result.display_name.toLowerCase().includes('hà nội') || 
+                    result.display_name.toLowerCase().includes('hanoi')) {
                     bestResult = result;
                     break;
                 }
             }
-
+            
             const lat = parseFloat(bestResult.lat);
             const lng = parseFloat(bestResult.lon);
             const distance = calculateHaversineDistance(hustLat, hustLng, lat, lng);
-
+            
             return {
                 distance: distance,
                 foundAddress: bestResult.display_name,
                 coordinates: { lat, lng },
-                method: "openstreetmap_fallback",
-                isApproximate: true,
+                method: 'openstreetmap_fallback',
+                isApproximate: true
             };
         }
-
+        
         return null;
     } catch (error) {
-        console.error("Fallback calculation failed:", error);
+        console.error('Fallback calculation failed:', error);
         return null;
     }
 }
@@ -378,22 +384,24 @@ async function calculateDistanceFallback(address) {
 // Cải tiến hàm Haversine
 function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
     if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
-        console.error("Invalid coordinates for distance calculation");
+        console.error('Invalid coordinates for distance calculation');
         return null;
     }
-
+    
     const R = 6371; // Bán kính trái đất tính bằng km
-
-    const lat1Rad = (lat1 * Math.PI) / 180;
-    const lat2Rad = (lat2 * Math.PI) / 180;
-    const deltaLatRad = ((lat2 - lat1) * Math.PI) / 180;
-    const deltaLonRad = ((lon2 - lon1) * Math.PI) / 180;
-
-    const a = Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(deltaLonRad / 2) * Math.sin(deltaLonRad / 2);
-
+    
+    const lat1Rad = lat1 * Math.PI / 180;
+    const lat2Rad = lat2 * Math.PI / 180;
+    const deltaLatRad = (lat2 - lat1) * Math.PI / 180;
+    const deltaLonRad = (lon2 - lon1) * Math.PI / 180;
+    
+    const a = Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) +
+              Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+              Math.sin(deltaLonRad / 2) * Math.sin(deltaLonRad / 2);
+    
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
-
+    
     return Math.round(distance * 100) / 100;
 }
 
@@ -405,12 +413,12 @@ async function updateShippingFee() {
     const shippingFeeSpan = document.getElementById("shippingFee");
 
     if (!addressInput || !distanceInfo || !distanceText || !shippingFeeSpan) {
-        console.error("Missing required elements for shipping calculation");
+        console.error('Missing required elements for shipping calculation');
         return;
     }
 
     const address = addressInput.value.trim();
-
+    
     if (!address) {
         distanceInfo.style.display = "none";
         shippingFee = 0;
@@ -422,7 +430,7 @@ async function updateShippingFee() {
     if (address.length < 10) {
         distanceInfo.style.display = "block";
         distanceText.innerHTML = '<span style="color: #f59e0b;">⚠️ Vui lòng nhập địa chỉ chi tiết hơn (tối thiểu 10 ký tự)</span>';
-        shippingFeeSpan.textContent = "";
+        shippingFeeSpan.textContent = '';
         return;
     }
 
@@ -439,23 +447,23 @@ async function updateShippingFee() {
 
         if (result && result.distance !== null) {
             const { distance, duration, foundAddress, method, isApproximate } = result;
-
-            let methodText = "";
-            if (method === "google_distance_matrix") {
-                methodText = "🗺️ Google Maps";
-            } else if (method === "haversine_fallback") {
-                methodText = "📏 Khoảng cách thẳng";
-            } else if (method === "openstreetmap_fallback") {
-                methodText = "🌍 Bản đồ mở (ước tính)";
+            
+            let methodText = '';
+            if (method === 'google_distance_matrix') {
+                methodText = '🗺️ Google Maps';
+            } else if (method === 'haversine_fallback') {
+                methodText = '📏 Khoảng cách thẳng';
+            } else if (method === 'openstreetmap_fallback') {
+                methodText = '🌍 Bản đồ mở (ước tính)';
             }
-
+            
             // Tính phí ship
             if (distance <= 5) {
                 shippingFee = 0;
                 distanceText.innerHTML = `
                     <div class="distance-result success">
                         <strong>📍 Khoảng cách: ${distance.toFixed(1)}km</strong>
-                        ${duration ? `<br><small>⏱️ Thời gian: ~${Math.round(duration)} phút</small>` : ""}
+                        ${duration ? `<br><small>⏱️ Thời gian: ~${Math.round(duration)} phút</small>` : ''}
                         <br><small class="method-info">${methodText}</small>
                     </div>
                 `;
@@ -465,13 +473,13 @@ async function updateShippingFee() {
                 distanceText.innerHTML = `
                     <div class="distance-result">
                         <strong>📍 Khoảng cách: ${distance.toFixed(1)}km</strong>
-                        ${duration ? `<br><small>⏱️ Thời gian: ~${Math.round(duration)} phút</small>` : ""}
+                        ${duration ? `<br><small>⏱️ Thời gian: ~${Math.round(duration)} phút</small>` : ''}
                         <br><small class="method-info">${methodText}</small>
                     </div>
                 `;
                 shippingFeeSpan.innerHTML = `<span style="color: #f59e0b; font-weight: bold;">🚚 Phí ship: ${shippingFee.toLocaleString("vi-VN")}đ</span>`;
             }
-
+            
             // Hiển thị địa chỉ được tìm thấy nếu khác nhiều với input
             if (foundAddress && foundAddress.toLowerCase() !== address.toLowerCase()) {
                 distanceText.innerHTML += `
@@ -482,12 +490,13 @@ async function updateShippingFee() {
                     </div>
                 `;
             }
+            
         } else {
-            throw new Error("Unable to calculate distance");
+            throw new Error('Unable to calculate distance');
         }
     } catch (error) {
-        console.error("Distance calculation failed:", error);
-
+        console.error('Distance calculation failed:', error);
+        
         distanceText.innerHTML = `
             <div class="distance-error">
                 <span style="color: #ef4444;">❌ Không thể tính khoảng cách</span>
@@ -514,15 +523,15 @@ function loadGoogleMapsAPI() {
             resolve();
             return;
         }
-
-        const script = document.createElement("script");
+        
+        const script = document.createElement('script');
         script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=geometry`;
         script.async = true;
         script.defer = true;
-
+        
         script.onload = () => resolve();
-        script.onerror = () => reject(new Error("Google Maps API failed to load"));
-
+        script.onerror = () => reject(new Error('Google Maps API failed to load'));
+        
         document.head.appendChild(script);
     });
 }
@@ -531,40 +540,37 @@ function loadGoogleMapsAPI() {
 async function calculateDistanceWithMapsAPI(origin, destination) {
     try {
         await loadGoogleMapsAPI();
-
+        
         const service = new google.maps.DistanceMatrixService();
-
+        
         return new Promise((resolve, reject) => {
-            service.getDistanceMatrix(
-                {
-                    origins: [origin],
-                    destinations: [destination],
-                    travelMode: google.maps.TravelMode.DRIVING,
-                    unitSystem: google.maps.UnitSystem.METRIC,
-                    avoidHighways: false,
-                    avoidTolls: false,
-                },
-                (response, status) => {
-                    if (status === google.maps.DistanceMatrixStatus.OK) {
-                        const element = response.rows[0].elements[0];
-                        if (element.status === "OK") {
-                            resolve({
-                                distance: element.distance.value / 1000,
-                                duration: element.duration.value / 60,
-                                distanceText: element.distance.text,
-                                durationText: element.duration.text,
-                            });
-                        } else {
-                            reject(new Error(`Distance calculation failed: ${element.status}`));
-                        }
+            service.getDistanceMatrix({
+                origins: [origin],
+                destinations: [destination],
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+            }, (response, status) => {
+                if (status === google.maps.DistanceMatrixStatus.OK) {
+                    const element = response.rows[0].elements[0];
+                    if (element.status === 'OK') {
+                        resolve({
+                            distance: element.distance.value / 1000,
+                            duration: element.duration.value / 60,
+                            distanceText: element.distance.text,
+                            durationText: element.duration.text
+                        });
                     } else {
-                        reject(new Error(`Distance Matrix API failed: ${status}`));
+                        reject(new Error(`Distance calculation failed: ${element.status}`));
                     }
+                } else {
+                    reject(new Error(`Distance Matrix API failed: ${status}`));
                 }
-            );
+            });
         });
     } catch (error) {
-        console.error("Google Maps API error:", error);
+        console.error('Google Maps API error:', error);
         throw error;
     }
 }
@@ -635,10 +641,10 @@ const enhancedDistanceCSS = `
 `;
 
 // Thêm CSS khi trang load
-document.addEventListener("DOMContentLoaded", function () {
-    if (!document.querySelector("#enhanced-distance-styles")) {
-        const styleElement = document.createElement("div");
-        styleElement.id = "enhanced-distance-styles";
+document.addEventListener('DOMContentLoaded', function() {
+    if (!document.querySelector('#enhanced-distance-styles')) {
+        const styleElement = document.createElement('div');
+        styleElement.id = 'enhanced-distance-styles';
         styleElement.innerHTML = enhancedDistanceCSS;
         document.head.appendChild(styleElement);
     }
@@ -650,24 +656,26 @@ async function calculateDistance(address) {
         // Tọa độ HUST: 21.0054, 105.8431
         const hustLat = 21.0054;
         const hustLng = 105.8431;
-
+        
         // Geocoding API (sử dụng OpenStreetMap Nominatim - miễn phí)
-        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ", Hà Nội, Việt Nam")}&limit=1`);
-
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Hà Nội, Việt Nam')}&limit=1`
+        );
+        
         const data = await response.json();
-
+        
         if (data && data.length > 0) {
             const lat = parseFloat(data[0].lat);
             const lng = parseFloat(data[0].lon);
-
+            
             // Tính khoảng cách bằng công thức Haversine
             const distance = calculateHaversineDistance(hustLat, hustLng, lat, lng);
             return distance;
         } else {
-            throw new Error("Không tìm thấy địa chỉ");
+            throw new Error('Không tìm thấy địa chỉ');
         }
     } catch (error) {
-        console.error("Error calculating distance:", error);
+        console.error('Error calculating distance:', error);
         return null;
     }
 }
@@ -675,194 +683,194 @@ async function calculateDistance(address) {
 // Công thức Haversine để tính khoảng cách giữa hai điểm
 function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
     const R = 6371; // Bán kính trái đất tính bằng km
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     const distance = R * c;
     return distance;
 }
 
 // Cập nhật phí giao hàng dựa trên khoảng cách
 async function updateShippingFee() {
-    const addressInput = document.getElementById("address");
-    const distanceInfo = document.getElementById("distanceInfo");
-    const distanceText = document.getElementById("distanceText");
-    const shippingFeeSpan = document.getElementById("shippingFee");
-
+    const addressInput = document.getElementById('address');
+    const distanceInfo = document.getElementById('distanceInfo');
+    const distanceText = document.getElementById('distanceText');
+    const shippingFeeSpan = document.getElementById('shippingFee');
+    
     if (!addressInput.value.trim()) {
-        distanceInfo.style.display = "none";
+        distanceInfo.style.display = 'none';
         shippingFee = 0;
         updatePaymentSummary();
         return;
     }
-
+    
     // Hiển thị loading
-    distanceInfo.style.display = "block";
-    distanceText.textContent = "📍 Đang tính khoảng cách...";
-    shippingFeeSpan.textContent = "";
-
+    distanceInfo.style.display = 'block';
+    distanceText.textContent = '📍 Đang tính khoảng cách...';
+    shippingFeeSpan.textContent = '';
+    
     try {
         const distance = await calculateDistance(addressInput.value);
-
+        
         if (distance !== null) {
             if (distance <= 5) {
                 shippingFee = 0;
                 distanceText.textContent = `📍 Khoảng cách: ${distance.toFixed(1)}km`;
-                shippingFeeSpan.textContent = "🎉 Miễn phí giao hàng!";
-                shippingFeeSpan.style.color = "#10b981";
+                shippingFeeSpan.textContent = '🎉 Miễn phí giao hàng!';
+                shippingFeeSpan.style.color = '#10b981';
             } else {
                 shippingFee = Math.ceil(distance - 5) * 5000;
                 distanceText.textContent = `📍 Khoảng cách: ${distance.toFixed(1)}km`;
-                shippingFeeSpan.textContent = `🚚 Phí ship: ${shippingFee.toLocaleString("vi-VN")}đ`;
-                shippingFeeSpan.style.color = "#f59e0b";
+                shippingFeeSpan.textContent = `🚚 Phí ship: ${shippingFee.toLocaleString('vi-VN')}đ`;
+                shippingFeeSpan.style.color = '#f59e0b';
             }
         } else {
-            distanceText.textContent = "⚠️ Không thể tính khoảng cách";
-            shippingFeeSpan.textContent = "Vui lòng nhập địa chỉ chi tiết hơn";
+            distanceText.textContent = '⚠️ Không thể tính khoảng cách';
+            shippingFeeSpan.textContent = 'Vui lòng nhập địa chỉ chi tiết hơn';
             shippingFee = 0;
         }
     } catch (error) {
-        distanceText.textContent = "⚠️ Lỗi tính khoảng cách";
-        shippingFeeSpan.textContent = "Phí ship sẽ được tính khi giao hàng";
+        distanceText.textContent = '⚠️ Lỗi tính khoảng cách';
+        shippingFeeSpan.textContent = 'Phí ship sẽ được tính khi giao hàng';
         shippingFee = 0;
     }
-
+    
     updatePaymentSummary();
 }
 
 // Áp dụng mã giảm giá
 function applyDiscountCode() {
-    const codeInput = document.getElementById("discountCode");
-    const statusDiv = document.getElementById("discountStatus");
+    const codeInput = document.getElementById('discountCode');
+    const statusDiv = document.getElementById('discountStatus');
     const code = codeInput.value.trim().toUpperCase();
-
+    
     if (!code) {
-        statusDiv.className = "discount-status error";
-        statusDiv.textContent = "⚠️ Vui lòng nhập mã giảm giá";
-        statusDiv.style.display = "block";
+        statusDiv.className = 'discount-status error';
+        statusDiv.textContent = '⚠️ Vui lòng nhập mã giảm giá';
+        statusDiv.style.display = 'block';
         return;
     }
-
+    
     const currentSubtotal = cart.reduce((total, item) => total + item.totalPrice, 0);
-
+    
     if (discountCodes[code]) {
         const discount = discountCodes[code];
-
+        
         // Kiểm tra yêu cầu đơn hàng tối thiểu
         if (currentSubtotal < discount.minOrder) {
-            statusDiv.className = "discount-status error";
-            statusDiv.textContent = `⚠️ Đơn hàng tối thiểu ${discount.minOrder.toLocaleString("vi-VN")}đ để sử dụng mã này`;
-            statusDiv.style.display = "block";
+            statusDiv.className = 'discount-status error';
+            statusDiv.textContent = `⚠️ Đơn hàng tối thiểu ${discount.minOrder.toLocaleString('vi-VN')}đ để sử dụng mã này`;
+            statusDiv.style.display = 'block';
             return;
         }
-
+        
         // Tính toán giảm giá
         let calculatedDiscount = 0;
-        if (discount.type === "percentage") {
-            calculatedDiscount = Math.min((currentSubtotal * discount.value) / 100, discount.maxDiscount);
-        } else if (discount.type === "fixed") {
+        if (discount.type === 'percentage') {
+            calculatedDiscount = Math.min((currentSubtotal * discount.value / 100), discount.maxDiscount);
+        } else if (discount.type === 'fixed') {
             calculatedDiscount = discount.value;
-        } else if (discount.type === "shipping") {
+        } else if (discount.type === 'shipping') {
             calculatedDiscount = Math.min(shippingFee, discount.maxDiscount);
         }
-
+        
         discountAmount = calculatedDiscount;
         appliedDiscountCode = code;
-
-        statusDiv.className = "discount-status success";
+        
+        statusDiv.className = 'discount-status success';
         statusDiv.textContent = `✅ Áp dụng thành công! ${discount.description}`;
-        statusDiv.style.display = "block";
-
+        statusDiv.style.display = 'block';
+        
         codeInput.disabled = true;
-        document.querySelector(".apply-discount-btn").textContent = "Đã áp dụng";
-        document.querySelector(".apply-discount-btn").disabled = true;
+        document.querySelector('.apply-discount-btn').textContent = 'Đã áp dụng';
+        document.querySelector('.apply-discount-btn').disabled = true;
+        
     } else {
-        statusDiv.className = "discount-status error";
-        statusDiv.textContent = "❌ Mã giảm giá không hợp lệ";
-        statusDiv.style.display = "block";
+        statusDiv.className = 'discount-status error';
+        statusDiv.textContent = '❌ Mã giảm giá không hợp lệ';
+        statusDiv.style.display = 'block';
         discountAmount = 0;
-        appliedDiscountCode = "";
+        appliedDiscountCode = '';
     }
-
+    
     updatePaymentSummary();
 }
 
 // Cập nhật tóm tắt thanh toán
 function updatePaymentSummary() {
     const subtotal = cart.reduce((total, item) => total + item.totalPrice, 0);
-
+    
     // Cập nhật các phần tử hiển thị
-    document.getElementById("subtotal").textContent = subtotal.toLocaleString("vi-VN") + " VND";
-    document.getElementById("shippingFeeDisplay").textContent = shippingFee.toLocaleString("vi-VN") + " VND";
-
+    document.getElementById('subtotal').textContent = subtotal.toLocaleString('vi-VN') + ' VND';
+    document.getElementById('shippingFeeDisplay').textContent = shippingFee.toLocaleString('vi-VN') + ' VND';
+    
     // Xử lý hiển thị giảm giá
-    const discountRow = document.getElementById("discountRow");
-    const discountAmountSpan = document.getElementById("discountAmount");
-
+    const discountRow = document.getElementById('discountRow');
+    const discountAmountSpan = document.getElementById('discountAmount');
+    
     if (discountAmount > 0) {
-        discountRow.style.display = "flex";
-        discountAmountSpan.textContent = "-" + discountAmount.toLocaleString("vi-VN") + " VND";
+        discountRow.style.display = 'flex';
+        discountAmountSpan.textContent = '-' + discountAmount.toLocaleString('vi-VN') + ' VND';
     } else {
-        discountRow.style.display = "none";
+        discountRow.style.display = 'none';
     }
-
+    
     // Tính toán tổng cộng cuối cùng
     const finalTotal = subtotal + shippingFee - discountAmount;
-    document.getElementById("finalTotal").textContent = finalTotal.toLocaleString("vi-VN") + " VND";
-    document.getElementById("totalAmount").value = finalTotal.toLocaleString("vi-VN") + " VND";
-
+    document.getElementById('finalTotal').textContent = finalTotal.toLocaleString('vi-VN') + ' VND';
+    document.getElementById('totalAmount').value = finalTotal.toLocaleString('vi-VN') + ' VND';
+    
     // Hiển thị thông báo giảm giá cho đơn hàng >= 200k
-    const discountAlert = document.getElementById("discountAlert");
+    const discountAlert = document.getElementById('discountAlert');
     if (subtotal >= 200000 && !appliedDiscountCode) {
-        discountAlert.style.display = "block";
+        discountAlert.style.display = 'block';
     } else if (subtotal < 200000) {
-        discountAlert.style.display = "none";
+        discountAlert.style.display = 'none';
     }
-
+    
     // Cập nhật QR amount
     updateVietQR(finalTotal);
 }
 
 // Xử lý thay đổi phương thức thanh toán
 function handlePaymentMethodChange() {
-    const paymentMethod = document.getElementById("paymentMethod").value;
-    const vietqrSection = document.getElementById("vietqrSection");
-
-    if (paymentMethod === "bank") {
-        vietqrSection.style.display = "block";
+    const paymentMethod = document.getElementById('paymentMethod').value;
+    const vietqrSection = document.getElementById('vietqrSection');
+    
+    if (paymentMethod === 'bank') {
+        vietqrSection.style.display = 'block';
         const finalTotal = cart.reduce((total, item) => total + item.totalPrice, 0) + shippingFee - discountAmount;
         updateVietQR(finalTotal);
     } else {
-        vietqrSection.style.display = "none";
+        vietqrSection.style.display = 'none';
     }
 }
 
 // Cập nhật VietQR
 function updateVietQR(amount) {
-    const qrAmount = document.getElementById("qrAmount");
-    const qrContent = document.getElementById("qrContent");
-    const qrCode = document.getElementById("qrCode");
-
+    const qrAmount = document.getElementById('qrAmount');
+    const qrContent = document.getElementById('qrContent');
+    const qrCode = document.getElementById('qrCode');
+    
     if (amount > 0) {
-        qrAmount.textContent = amount.toLocaleString("vi-VN") + " VND";
-
+        qrAmount.textContent = amount.toLocaleString('vi-VN') + ' VND';
+        
         // Tạo ID đơn hàng
-        const now = new Date();
-        const ddMMyy = now.getDate().toString().padStart(2, "0") + (now.getMonth() + 1).toString().padStart(2, "0") + now.getFullYear().toString().slice(-2);
-        // Kết quả: "170625" nếu là ngày 17/06/2025
-
-        const orderId = "MHX2025" + ddMMyy;
+        const orderId = 'MHX2025_' + Date.now();
         qrContent.textContent = `${orderId}`;
-
+        
         // Tạo URL VietQR
-        const bankId = "970407"; // Techcombank
-        const accountNo = "1120051111"; // Số tài khoản
-        const template = "compact2";
+        const bankId = '970407'; // Techcombank
+        const accountNo = '1120051111'; // Số tài khoản
+        const template = 'compact2';
         const description = encodeURIComponent(`${orderId}`);
-
+        
         const vietqrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-${template}.png?amount=${amount}&addInfo=${description}&accountName=PHAM DUC HAI TRIEU`;
-
+        
         qrCode.innerHTML = `<img src="${vietqrUrl}" alt="VietQR Code" style="max-width: 100%; height: auto;" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNjc3NDhGIiBmb250LXNpemU9IjE0Ij5RUiBDb2RlPC90ZXh0Pgo8L3N2Zz4='" />`;
     }
 }
@@ -883,7 +891,7 @@ function updatePaymentForm() {
         if (totalAmountInput) {
             totalAmountInput.value = "0 VND";
         }
-
+        
         // Reset all calculations
         shippingFee = 0;
         discountAmount = 0;
@@ -1000,9 +1008,7 @@ function submitOrder() {
     // Tạo dữ liệu đơn hàng
     let cartItemsString = "";
     cart.forEach((item, index) => {
-        cartItemsString += `Sản phẩm ${index + 1}: ${item.productName}, SL: ${item.quantity}, Giá: ${item.price.toLocaleString("vi-VN")}đ, Tổng: ${item.totalPrice.toLocaleString(
-            "vi-VN"
-        )}đ; `;
+        cartItemsString += `Sản phẩm ${index + 1}: ${item.productName}, SL: ${item.quantity}, Giá: ${item.price.toLocaleString("vi-VN")}đ, Tổng: ${item.totalPrice.toLocaleString("vi-VN")}đ; `;
     });
 
     const subtotal = cart.reduce((total, item) => total + item.totalPrice, 0);
@@ -1014,10 +1020,10 @@ function submitOrder() {
         phone: phone,
         address: address,
         paymentMethod: paymentMethod,
-        subtotal: subtotal.toLocaleString("vi-VN") + " VND",
-        shippingFee: shippingFee.toLocaleString("vi-VN") + " VND",
+        subtotal: subtotal.toLocaleString('vi-VN') + " VND",
+        shippingFee: shippingFee.toLocaleString('vi-VN') + " VND",
         discountCode: appliedDiscountCode,
-        discountAmount: discountAmount.toLocaleString("vi-VN") + " VND",
+        discountAmount: discountAmount.toLocaleString('vi-VN') + " VND",
         totalAmount: finalTotal.toLocaleString("vi-VN") + " VND",
         note: note,
         cartItems: cartItemsString,
@@ -1040,16 +1046,16 @@ function submitOrder() {
             cart = [];
             shippingFee = 0;
             discountAmount = 0;
-            appliedDiscountCode = "";
+            appliedDiscountCode = '';
             document.getElementById("paymentForm").reset();
-            document.getElementById("discountCode").disabled = false;
-            document.querySelector(".apply-discount-btn").disabled = false;
-            document.querySelector(".apply-discount-btn").textContent = "Áp dụng";
-            document.getElementById("discountStatus").style.display = "none";
-            document.getElementById("distanceInfo").style.display = "none";
-            document.getElementById("vietqrSection").style.display = "none";
-            document.getElementById("discountAlert").style.display = "none";
-
+            document.getElementById('discountCode').disabled = false;
+            document.querySelector('.apply-discount-btn').disabled = false;
+            document.querySelector('.apply-discount-btn').textContent = 'Áp dụng';
+            document.getElementById('discountStatus').style.display = 'none';
+            document.getElementById('distanceInfo').style.display = 'none';
+            document.getElementById('vietqrSection').style.display = 'none';
+            document.getElementById('discountAlert').style.display = 'none';
+            
             updatePaymentForm();
             updateCartBadge();
 
@@ -1134,10 +1140,10 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(animateCounters, 1000);
 
     // Add event listeners for new features
-    const addressInput = document.getElementById("address");
+    const addressInput = document.getElementById('address');
     if (addressInput) {
         let addressTimeout;
-        addressInput.addEventListener("input", function () {
+        addressInput.addEventListener('input', function() {
             clearTimeout(addressTimeout);
             addressTimeout = setTimeout(updateShippingFee, 1000); // Debounce 1 second
         });

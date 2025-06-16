@@ -816,7 +816,7 @@ function updatePaymentSummary() {
     const discountAlert = document.getElementById("discountAlert");
     if (subtotal >= 200000 && !appliedDiscountCode) {
         discountAlert.style.display = "block";
-    } else if (subtotal < 200000) {
+    } else if (subtotal < 0) {
         discountAlert.style.display = "none";
     }
 

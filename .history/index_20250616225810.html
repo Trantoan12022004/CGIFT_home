@@ -174,7 +174,7 @@
                     </div>
 
                     <!-- Discount Alert for 200k+ orders -->
-                    <div id="discountAlert" class="discount-alert" style="display: none">
+                    <div id="discountAlert" class="discount-alert" style="display: none;">
                         <div class="alert-content">
                             <div class="alert-icon">🎉</div>
                             <div class="alert-text">
@@ -204,7 +204,7 @@
                         <div class="form-group">
                             <label class="form-label" for="address">📍 Địa chỉ giao hàng *</label>
                             <input type="text" id="address" class="form-input" required placeholder="Nhập địa chỉ chi tiết (VD: 123 Đại Cồ Việt, Hai Bà Trưng, Hà Nội)" />
-                            <div id="distanceInfo" class="distance-info" style="display: none">
+                            <div id="distanceInfo" class="distance-info" style="display: none;">
                                 <span id="distanceText"></span>
                                 <span id="shippingFee"></span>
                             </div>
@@ -216,7 +216,9 @@
                                 <label class="form-label" for="discountCode">🎫 Mã giảm giá (tùy chọn)</label>
                                 <div class="discount-input-group">
                                     <input type="text" id="discountCode" class="form-input" placeholder="Nhập mã giảm giá" />
-                                    <button type="button" class="apply-discount-btn" onclick="applyDiscountCode()">Áp dụng</button>
+                                    <button type="button" class="apply-discount-btn" onclick="applyDiscountCode()">
+                                        Áp dụng
+                                    </button>
                                 </div>
                             </div>
                             <div id="discountStatus" class="discount-status"></div>
@@ -252,7 +254,7 @@
                                 <span>Phí giao hàng:</span>
                                 <span id="shippingFeeDisplay">0 VND</span>
                             </div>
-                            <div class="summary-row discount-row" id="discountRow" style="display: none">
+                            <div class="summary-row discount-row" id="discountRow" style="display: none;">
                                 <span>Giảm giá:</span>
                                 <span id="discountAmount">-0 VND</span>
                             </div>
@@ -263,18 +265,28 @@
                         </div>
 
                         <!-- VietQR Section -->
-                        <div id="vietqrSection" class="vietqr-section" style="display: none">
+                        <div id="vietqrSection" class="vietqr-section" style="display: none;">
                             <h4 class="vietqr-title">📱 Quét mã QR để thanh toán</h4>
                             <div class="qr-container">
                                 <div id="qrCode" class="qr-code">
                                     <!-- QR Code sẽ được tạo ở đây -->
                                 </div>
                                 <div class="bank-info">
-                                    <div class="bank-detail"><strong>🏦 Ngân hàng:</strong> Techcombank</div>
-                                    <div class="bank-detail"><strong>📋 Số tài khoản:</strong> 1120051111</div>
-                                    <div class="bank-detail"><strong>👤 Chủ tài khoản:</strong> Phạm Đức Hải Triều</div>
-                                    <div class="bank-detail"><strong>💰 Số tiền:</strong> <span id="qrAmount">0 VND</span></div>
-                                    <div class="bank-detail"><strong>📝 Nội dung:</strong> <span id="qrContent">MHX2025</span></div>
+                                    <div class="bank-detail">
+                                        <strong>🏦 Ngân hàng:</strong> Vietcombank
+                                    </div>
+                                    <div class="bank-detail">
+                                        <strong>📋 Số tài khoản:</strong> 1234567890
+                                    </div>
+                                    <div class="bank-detail">
+                                        <strong>👤 Chủ tài khoản:</strong> CTES-SIE SHOP
+                                    </div>
+                                    <div class="bank-detail">
+                                        <strong>💰 Số tiền:</strong> <span id="qrAmount">0 VND</span>
+                                    </div>
+                                    <div class="bank-detail">
+                                        <strong>📝 Nội dung:</strong> <span id="qrContent">MHX2025</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="qr-instructions">

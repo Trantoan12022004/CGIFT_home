@@ -852,7 +852,7 @@ function updateVietQR(amount) {
         const ddMMyy = now.getDate().toString().padStart(2, "0") + (now.getMonth() + 1).toString().padStart(2, "0") + now.getFullYear().toString().slice(-2);
         // Kết quả: "170625" nếu là ngày 17/06/2025
 
-        const orderId = "MHX2025" + ddMMyy;
+        const orderId = "MHX" + ddMMyy;
         qrContent.textContent = `${orderId}`;
 
         // Tạo URL VietQR

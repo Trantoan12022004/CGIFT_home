@@ -650,11 +650,16 @@ async function calculateDistance(address) {
         // Tọa độ HUST: 21.0054, 105.8431
         const hustLat = 21.0054;
         const hustLng = 105.8431;
-
+        const HERE_API_KEY = "your-here-api-key";
         // Geocoding API (sử dụng OpenStreetMap Nominatim - miễn phí)
-        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ", Hà Nội, Việt Nam")}&limit=1`);
+       const url = `https://geocode.search.hereapi.com/v1/geocode?` +
+    `q=${encodeURIComponent(address)}&` +
+    `in=countryCode:VNM&` +
+    `lang=vi&` +
+    `apiKey=${HERE_API_KEY}`;
 
-        const data = await response.json();
+const response = await fetch(url);
+const data = await response.json();
 
         if (data && data.length > 0) {
             const lat = parseFloat(data[0].lat);

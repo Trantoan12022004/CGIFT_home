@@ -653,7 +653,6 @@ async function calculateDistance(address) {
 
         // Geocoding API (sử dụng OpenStreetMap Nominatim - miễn phí)
         const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ", Hà Nội, Việt Nam")}&limit=1`);
-
         const data = await response.json();
 
         if (data && data.length > 0) {

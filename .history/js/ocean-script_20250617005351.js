@@ -647,12 +647,83 @@ document.addEventListener("DOMContentLoaded", function () {
 // Tính khoảng cách từ HUST (Đại học Bách khoa Hà Nội)
 async function calculateDistance(address) {
     try {
-        // Tọa độ HUST: 21.0054, 105.8431
+        // Tọa độ chính xác của HUST (Đại học Bách khoa Hà Nội)
         const hustLat = 21.0054;
         const hustLng = 105.8431;
 
-        // Geocoding API (sử dụng OpenStreetMap Nominatim - miễn phí)
-        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ", Hà Nội, Việt Nam")}&limit=1`);
+        console.log("Calculating distance from HUST to:", address);
+
+        // Step 1: Geocode địa chỉ sử dụng Nominatim (hoàn toàn miễn phí)
+        const geocodeResponse = await fetch(
+            `https://nominatim.openstreetmap.org/search?` + `format=json&` + `q=${encodeURIComponent(address + ", Hà Nội, Việt Nam")}&` + `limit=1`,
+            {
+                headers: {
+                    "User-Agent": "HUST-Distance-Calculator",
+                },
+            }
+        );
+
+        const geocodeData = await geocodeResponse.json();
+
+        if (!geocodeData || geocodeData.length === 0) {
+            throw new Error("Không tìm thấy địa chỉ");
+        }
+
+        const destLat = parseFloat(geocodeData[0].lat);
+        const destLng = parseFloat(geocodeData[0].lon);
+        const foundAddress = geocodeData[0].display_name;
+
+        // Step 2: Sử dụng OSRM API công cộng để lấy khoảng cách đi lại thực tế (hoàn toàn miễn phí)
+        const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${hustLng},${hustLat};${destLng},${destLat}?overview=false`;
+
+        const routeResponse = await fetch(osrmUrl);
+        const routeData = await routeResponse.json();
+
+        if (routeData.code === "Ok" && routeData.routes && routeData.routes.length > 0) {
+            // Khoảng cách tính bằng mét, chuyển sang km
+            const distanceInKm = routeData.routes[0].distance / 1000;
+            const durationInMinutes = routeData.routes[0].duration / 60;
+
+            return {
+                distance: Math.round(distanceInKm * 100) / 100, // Làm tròn 2 chữ số thập phân
+                duration: Math.round(durationInMinutes),
+                foundAddress: foundAddress,
+                coordinates: { lat: destLat, lng: destLng },
+                method: "osrm_routing",
+            };
+        } else {
+            console.log("OSRM response:", routeData);
+            throw new Error("Không thể tính toán đường đi");
+        }
+    } catch (error) {
+        console.error("Error calculating distance with OSRM:", error);
+
+        // Quay lại phương pháp Haversine nếu OSRM thất bại
+        try {
+            return await calculateHaversineDistanceFallback(address);
+        } catch (fallbackError) {
+            console.error("All calculation methods failed:", fallbackError);
+            return null;
+        }
+    }
+}
+
+// Công thức Haversine để tính khoảng cách giữa hai điểm
+// Phương pháp dự phòng sử dụng Haversine
+async function calculateHaversineDistanceFallback(address) {
+    try {
+        // Tọa độ HUST
+        const hustLat = 21.0054;
+        const hustLng = 105.8431;
+
+        console.log("Using Haversine fallback for:", address);
+
+        // Geocoding với Nominatim
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ", Hà Nội, Việt Nam")}&limit=1`, {
+            headers: {
+                "User-Agent": "HUST-Distance-Calculator",
+            },
+        });
 
         const data = await response.json();
 
@@ -660,27 +731,44 @@ async function calculateDistance(address) {
             const lat = parseFloat(data[0].lat);
             const lng = parseFloat(data[0].lon);
 
-            // Tính khoảng cách bằng công thức Haversine
             const distance = calculateHaversineDistance(hustLat, hustLng, lat, lng);
-            return distance;
+
+            return {
+                distance: distance,
+                foundAddress: data[0].display_name,
+                coordinates: { lat, lng },
+                method: "haversine_fallback",
+                isApproximate: true,
+            };
         } else {
             throw new Error("Không tìm thấy địa chỉ");
         }
     } catch (error) {
-        console.error("Error calculating distance:", error);
+        console.error("Haversine fallback failed:", error);
         return null;
     }
 }
 
-// Công thức Haversine để tính khoảng cách giữa hai điểm
+// Công thức Haversine cải tiến
 function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
+    if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
+        console.error("Invalid coordinates for distance calculation");
+        return null;
+    }
+
     const R = 6371; // Bán kính trái đất tính bằng km
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    const lat1Rad = (lat1 * Math.PI) / 180;
+    const lat2Rad = (lat2 * Math.PI) / 180;
+    const deltaLatRad = ((lat2 - lat1) * Math.PI) / 180;
+    const deltaLonRad = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a = Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(deltaLonRad / 2) * Math.sin(deltaLonRad / 2);
+
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
-    return distance;
+
+    return Math.round(distance * 100) / 100; // Làm tròn 2 chữ số thập phân
 }
 
 // Cập nhật phí giao hàng dựa trên khoảng cách

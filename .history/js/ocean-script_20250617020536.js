@@ -814,7 +814,7 @@ function updatePaymentSummary() {
 
     // Hiển thị thông báo giảm giá cho đơn hàng >= 200k
     const discountAlert = document.getElementById("discountAlert");
-    if (subtotal >= 200000 && !appliedDiscountCode) {
+    if (subtotal >= 0 && !appliedDiscountCode) {
         discountAlert.style.display = "block";
     } else if (subtotal < 200000) {
         discountAlert.style.display = "none";

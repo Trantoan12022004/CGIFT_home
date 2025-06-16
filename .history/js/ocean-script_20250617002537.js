@@ -212,192 +212,378 @@ async function calculateDistance(address) {
         // Tọa độ chính xác của số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội
         const hustLat = 21.0285;
         const hustLng = 105.8542;
-        const hustAddress = "1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội, Việt Nam";
-
-        console.log("Calculating distance from HUST to:", address);
-
-        // Sử dụng Google Geocoding API để lấy tọa độ chính xác
-        const geocodeResult = await geocodeAddress(address);
-
-        if (!geocodeResult) {
-            throw new Error("Không thể tìm thấy địa chỉ");
+        
+        console.log('🔍 Tính khoảng cách từ HUST đến:', address);
+        
+        // Chuẩn hóa địa chỉ đầu vào
+        const normalizedAddress = normalizeAddressInput(address);
+        
+        // Thử các phương pháp tìm kiếm khác nhau
+        let result = null;
+        
+        // Method 1: Tìm kiếm với địa chỉ đầy đủ
+        result = await tryGeocoding(normalizedAddress.full);
+        
+        // Method 2: Tìm kiếm với địa chỉ đơn giản
+        if (!result && normalizedAddress.simple) {
+            console.log('🔄 Thử tìm kiếm đơn giản...');
+            result = await tryGeocoding(normalizedAddress.simple);
         }
-
-        const { lat, lng, formattedAddress } = geocodeResult;
-
-        // Sử dụng Google Distance Matrix API để tính khoảng cách thực tế
-        const distanceResult = await calculateDistanceMatrix(hustAddress, address);
-
-        if (distanceResult) {
-            return {
-                distance: distanceResult.distance,
-                duration: distanceResult.duration,
-                foundAddress: formattedAddress,
-                coordinates: { lat, lng },
-                method: "google_distance_matrix",
-            };
-        } else {
-            // Fallback: tính khoảng cách trực tiếp bằng Haversine
-            const distance = calculateHaversineDistance(hustLat, hustLng, lat, lng);
+        
+        // Method 3: Tìm kiếm theo keywords
+        if (!result) {
+            console.log('🔍 Thử tìm kiếm theo từ khóa...');
+            result = await tryKeywordGeocoding(address);
+        }
+        
+        if (result) {
+            const distance = calculateHaversineDistance(hustLat, hustLng, result.lat, result.lng);
+            
             return {
                 distance: distance,
-                foundAddress: formattedAddress,
-                coordinates: { lat, lng },
-                method: "haversine_fallback",
+                foundAddress: result.display_name,
+                coordinates: { lat: result.lat, lng: result.lng },
+                method: result.method,
+                confidence: result.confidence || 0.7
             };
         }
+        
+        // Fallback: Ước tính theo khu vực
+        return estimateByLocation(address);
+        
     } catch (error) {
-        console.error("Error calculating distance:", error);
-
-        // Fallback cuối cùng: sử dụng OpenStreetMap
-        return await calculateDistanceFallback(address);
+        console.error('❌ Lỗi tính khoảng cách:', error);
+        return estimateByLocation(address);
     }
 }
 
-// Geocoding sử dụng Google Maps API
-async function geocodeAddress(address) {
-    try {
-        const response = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?` +
-                `address=${encodeURIComponent(address + ", Hà Nội, Việt Nam")}&` +
-                `region=vn&` +
-                `language=vi&` +
-                `key=${GOOGLE_MAPS_API_KEY}`
-        );
-
-        const data = await response.json();
-
-        if (data.status === "OK" && data.results.length > 0) {
-            const result = data.results[0];
-            const location = result.geometry.location;
-
-            return {
-                lat: location.lat,
-                lng: location.lng,
-                formattedAddress: result.formatted_address,
-            };
-        } else {
-            console.error("Geocoding failed:", data.status);
-            return null;
-        }
-    } catch (error) {
-        console.error("Geocoding error:", error);
-        return null;
+// Chuẩn hóa địa chỉ đầu vào
+function normalizeAddressInput(address) {
+    const original = address.trim();
+    
+    // Tạo phiên bản đầy đủ
+    let fullAddress = original;
+    if (!fullAddress.toLowerCase().includes('hà nội') && !fullAddress.toLowerCase().includes('hanoi')) {
+        fullAddress += ', Hà Nội';
     }
+    if (!fullAddress.toLowerCase().includes('việt nam') && !fullAddress.toLowerCase().includes('vietnam')) {
+        fullAddress += ', Việt Nam';
+    }
+    
+    // Tạo phiên bản đơn giản (chỉ lấy phần đầu)
+    const parts = original.split(',').map(p => p.trim());
+    let simpleAddress = null;
+    
+    if (parts.length > 1) {
+        // Lấy 1-2 phần đầu tiên + Hà Nội
+        simpleAddress = parts.slice(0, 2).join(', ') + ', Hà Nội, Việt Nam';
+    }
+    
+    return {
+        full: fullAddress,
+        simple: simpleAddress,
+        original: original
+    };
 }
 
-// Tính khoảng cách sử dụng Google Distance Matrix API
-async function calculateDistanceMatrix(origin, destination) {
+// Thử geocoding với Nominatim
+async function tryGeocoding(searchQuery) {
     try {
-        const response = await fetch(
-            `https://maps.googleapis.com/maps/api/distancematrix/json?` +
-                `origins=${encodeURIComponent(origin)}&` +
-                `destinations=${encodeURIComponent(destination + ", Hà Nội, Việt Nam")}&` +
-                `mode=driving&` +
-                `language=vi&` +
-                `region=vn&` +
-                `key=${GOOGLE_MAPS_API_KEY}`
-        );
-
-        const data = await response.json();
-
-        if (data.status === "OK" && data.rows.length > 0 && data.rows[0].elements.length > 0 && data.rows[0].elements[0].status === "OK") {
-            const element = data.rows[0].elements[0];
-
-            return {
-                distance: element.distance.value / 1000, // Convert từ meters sang km
-                duration: element.duration.value / 60, // Convert từ seconds sang minutes
-                distanceText: element.distance.text,
-                durationText: element.duration.text,
-            };
-        } else {
-            console.error("Distance Matrix failed:", data.status);
-            return null;
-        }
-    } catch (error) {
-        console.error("Distance Matrix error:", error);
-        return null;
-    }
-}
-
-// Fallback function sử dụng OpenStreetMap
-async function calculateDistanceFallback(address) {
-    try {
-        const hustLat = 21.0285;
-        const hustLng = 105.8542;
-
-        console.log("Using OpenStreetMap fallback...");
-
-        const response = await fetch(
-            `https://nominatim.openstreetmap.org/search?` +
-                `format=json&` +
-                `q=${encodeURIComponent(address + ", Hà Nội, Việt Nam")}&` +
-                `limit=3&` +
-                `addressdetails=1&` +
-                `countrycodes=vn&` +
-                `accept-language=vi`,
+        const queries = [
+            // Query 1: Tìm kiếm chính xác
             {
-                headers: {
-                    "User-Agent": "CTES-SIE-SHOP-Website",
-                },
+                url: `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5&addressdetails=1&countrycodes=vn&accept-language=vi`,
+                method: 'exact_search'
+            },
+            // Query 2: Tìm kiếm với bounded box Hà Nội
+            {
+                url: `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5&addressdetails=1&countrycodes=vn&bounded=1&viewbox=105.3,21.4,106.0,20.8`,
+                method: 'bounded_search'
             }
-        );
-
-        const data = await response.json();
-
-        if (data && data.length > 0) {
-            // Tìm kết quả tốt nhất
-            let bestResult = data[0];
-            for (let result of data) {
-                if (result.display_name.toLowerCase().includes("hà nội") || result.display_name.toLowerCase().includes("hanoi")) {
-                    bestResult = result;
-                    break;
+        ];
+        
+        for (const query of queries) {
+            console.log(`🔍 Thử: ${query.method}`);
+            
+            const response = await fetch(query.url, {
+                headers: {
+                    'User-Agent': 'CTES-SIE-SHOP/1.0 (contact@ctessie.com)'
+                }
+            });
+            
+            if (!response.ok) continue;
+            
+            const data = await response.json();
+            
+            if (data && data.length > 0) {
+                // Tìm kết quả tốt nhất
+                const bestResult = findBestResult(data, searchQuery);
+                if (bestResult) {
+                    return {
+                        lat: parseFloat(bestResult.lat),
+                        lng: parseFloat(bestResult.lon),
+                        display_name: bestResult.display_name,
+                        method: query.method,
+                        confidence: calculateResultConfidence(bestResult, searchQuery)
+                    };
                 }
             }
-
-            const lat = parseFloat(bestResult.lat);
-            const lng = parseFloat(bestResult.lon);
-            const distance = calculateHaversineDistance(hustLat, hustLng, lat, lng);
-
-            return {
-                distance: distance,
-                foundAddress: bestResult.display_name,
-                coordinates: { lat, lng },
-                method: "openstreetmap_fallback",
-                isApproximate: true,
-            };
         }
-
+        
         return null;
     } catch (error) {
-        console.error("Fallback calculation failed:", error);
+        console.error('Geocoding error:', error);
         return null;
     }
 }
 
-// Cải tiến hàm Haversine
-function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
-    if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
-        console.error("Invalid coordinates for distance calculation");
-        return null;
+// Tìm kết quả tốt nhất từ danh sách
+function findBestResult(results, originalQuery) {
+    let bestResult = null;
+    let highestScore = 0;
+    
+    const queryLower = originalQuery.toLowerCase();
+    const queryParts = queryLower.split(/[,\s]+/).filter(part => part.length > 1);
+    
+    for (const result of results) {
+        let score = 0;
+        const displayName = result.display_name.toLowerCase();
+        
+        // Điểm cho việc chứa "hà nội"
+        if (displayName.includes('hà nội') || displayName.includes('hanoi')) {
+            score += 40;
+        }
+        
+        // Điểm cho loại địa điểm phù hợp
+        const goodTypes = ['house', 'building', 'residential', 'road', 'street', 'address', 'amenity'];
+        if (goodTypes.includes(result.type) || goodTypes.includes(result.class)) {
+            score += 30;
+        }
+        
+        // Điểm cho việc match các từ khóa
+        let matchedWords = 0;
+        for (const part of queryParts) {
+            if (part.length > 2 && displayName.includes(part)) {
+                matchedWords++;
+                score += 15;
+            }
+        }
+        
+        // Điểm cho importance
+        if (result.importance) {
+            score += result.importance * 25;
+        }
+        
+        // Điểm cho địa chỉ có cấu trúc tốt
+        if (result.address) {
+            if (result.address.road || result.address.street) score += 10;
+            if (result.address.house_number) score += 15;
+            if (result.address.suburb || result.address.district) score += 10;
+        }
+        
+        // Ưu tiên kết quả trong thành phố Hà Nội
+        if (result.address && (
+            (result.address.city && result.address.city.toLowerCase().includes('hà nội')) ||
+            (result.address.state && result.address.state.toLowerCase().includes('hà nội'))
+        )) {
+            score += 50;
+        }
+        
+        console.log(`Score: ${score} for ${result.display_name.substring(0, 50)}...`);
+        
+        if (score > highestScore) {
+            highestScore = score;
+            bestResult = result;
+        }
     }
-
-    const R = 6371; // Bán kính trái đất tính bằng km
-
-    const lat1Rad = (lat1 * Math.PI) / 180;
-    const lat2Rad = (lat2 * Math.PI) / 180;
-    const deltaLatRad = ((lat2 - lat1) * Math.PI) / 180;
-    const deltaLonRad = ((lon2 - lon1) * Math.PI) / 180;
-
-    const a = Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(deltaLonRad / 2) * Math.sin(deltaLonRad / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
-
-    return Math.round(distance * 100) / 100;
+    
+    return bestResult;
 }
 
-// Cập nhật phí giao hàng với Google Maps
+// Tính confidence của kết quả
+function calculateResultConfidence(result, originalQuery) {
+    let confidence = 0.5;
+    
+    const displayName = result.display_name.toLowerCase();
+    const query = originalQuery.toLowerCase();
+    
+    // Tăng confidence dựa trên match
+    const queryWords = query.split(/[,\s]+/).filter(w => w.length > 2);
+    const matchedWords = queryWords.filter(word => displayName.includes(word));
+    
+    confidence += (matchedWords.length / queryWords.length) * 0.3;
+    
+    // Tăng confidence cho loại địa điểm tốt
+    const goodTypes = ['house', 'building', 'residential', 'road'];
+    if (goodTypes.includes(result.type)) {
+        confidence += 0.2;
+    }
+    
+    return Math.min(confidence, 1.0);
+}
+
+// Tìm kiếm theo keywords
+async function tryKeywordGeocoding(address) {
+    try {
+        const keywords = extractKeywords(address);
+        
+        for (const keyword of keywords) {
+            const searchQuery = `${keyword}, Hà Nội, Việt Nam`;
+            console.log('🔍 Keyword search:', searchQuery);
+            
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=3&countrycodes=vn`,
+                {
+                    headers: {
+                        'User-Agent': 'CTES-SIE-SHOP/1.0'
+                    }
+                }
+            );
+            
+            const data = await response.json();
+            
+            if (data && data.length > 0) {
+                const result = data[0];
+                return {
+                    lat: parseFloat(result.lat),
+                    lng: parseFloat(result.lon),
+                    display_name: result.display_name,
+                    method: 'keyword_search',
+                    confidence: 0.6
+                };
+            }
+        }
+        
+        return null;
+    } catch (error) {
+        console.error('Keyword search failed:', error);
+        return null;
+    }
+}
+
+// Trích xuất từ khóa quan trọng
+function extractKeywords(address) {
+    const keywords = [];
+    const addressLower = address.toLowerCase();
+    
+    // Tìm tên đường/phố
+    const streetPatterns = [
+        /(\w+\s+đường)/g,
+        /(\w+\s+phố)/g,
+        /(đường\s+\w+)/g,
+        /(phố\s+\w+)/g
+    ];
+    
+    streetPatterns.forEach(pattern => {
+        const matches = addressLower.match(pattern);
+        if (matches) {
+            keywords.push(...matches);
+        }
+    });
+    
+    // Tìm quận/huyện
+    const districtPatterns = [
+        /(quận\s+\w+)/g,
+        /(huyện\s+\w+)/g,
+        /(\w+\s+quận)/g,
+        /(\w+\s+huyện)/g
+    ];
+    
+    districtPatterns.forEach(pattern => {
+        const matches = addressLower.match(pattern);
+        if (matches) {
+            keywords.push(...matches);
+        }
+    });
+    
+    // Tìm landmarks
+    const landmarks = ['đại học', 'bệnh viện', 'chợ', 'công viên', 'trường', 'bưu điện'];
+    landmarks.forEach(landmark => {
+        if (addressLower.includes(landmark)) {
+            // Lấy cả từ trước và sau landmark
+            const words = addressLower.split(/\s+/);
+            const landmarkIndex = words.findIndex(word => word.includes(landmark));
+            if (landmarkIndex >= 0) {
+                const start = Math.max(0, landmarkIndex - 1);
+                const end = Math.min(words.length, landmarkIndex + 2);
+                keywords.push(words.slice(start, end).join(' '));
+            }
+        }
+    });
+    
+    return [...new Set(keywords)].filter(k => k.length > 3);
+}
+
+// Ước tính theo khu vực
+function estimateByLocation(address) {
+    const addressLower = address.toLowerCase();
+    
+    // Database ước tính khoảng cách chi tiết hơn
+    const locationEstimates = {
+        // Quận trung tâm
+        'hai bà trưng': 2.5,
+        'đống đa': 4.0,
+        'ba đình': 5.0,
+        'hoàn kiếm': 4.5,
+        'thanh xuân': 6.0,
+        'hoàng mai': 4.0,
+        'cầu giấy': 8.0,
+        'tây hồ': 7.0,
+        'long biên': 7.0,
+        
+        // Khu vực cụ thể
+        'định công': 5.0,
+        'giải phóng': 4.5,
+        'bach khoa': 1.0,
+        'bách khoa': 1.0,
+        'đại cồ việt': 0.5,
+        'lê thanh nghị': 3.0,
+        'phạm ngọc thạch': 2.5,
+        'trần đại nghĩa': 1.5,
+        
+        // Huyện ngoại thành
+        'đông anh': 25.0,
+        'gia lâm': 15.0,
+        'sóc sơn': 35.0,
+        'me linh': 40.0,
+        'hà đông': 18.0,
+        'nam từ liêm': 12.0,
+        'bắc từ liêm': 15.0,
+        
+        // Landmarks
+        'bệnh viện bach mai': 3.0,
+        'đại học quốc gia': 8.0,
+        'sân bay nội bài': 45.0,
+        'ga hà nội': 6.0
+    };
+    
+    for (const [location, distance] of Object.entries(locationEstimates)) {
+        if (addressLower.includes(location)) {
+            console.log(`📍 Ước tính theo khu vực ${location}: ${distance}km`);
+            return {
+                distance: distance,
+                foundAddress: `Ước tính cho khu vực ${location}`,
+                coordinates: { lat: null, lng: null },
+                method: 'location_estimate',
+                confidence: 0.5,
+                isEstimate: true
+            };
+        }
+    }
+    
+    // Fallback cuối cùng
+    console.log('⚠️ Sử dụng ước tính mặc định');
+    return {
+        distance: 8.0,
+        foundAddress: 'Ước tính cho khu vực Hà Nội',
+        coordinates: { lat: null, lng: null },
+        method: 'default_estimate',
+        confidence: 0.3,
+        isEstimate: true
+    };
+}
+
+// Cập nhật hàm updateShippingFee để sử dụng kết quả mới
 async function updateShippingFee() {
     const addressInput = document.getElementById("address");
     const distanceInfo = document.getElementById("distanceInfo");
@@ -405,12 +591,12 @@ async function updateShippingFee() {
     const shippingFeeSpan = document.getElementById("shippingFee");
 
     if (!addressInput || !distanceInfo || !distanceText || !shippingFeeSpan) {
-        console.error("Missing required elements for shipping calculation");
+        console.error("❌ Thiếu elements cần thiết");
         return;
     }
 
     const address = addressInput.value.trim();
-
+    
     if (!address) {
         distanceInfo.style.display = "none";
         shippingFee = 0;
@@ -418,19 +604,27 @@ async function updateShippingFee() {
         return;
     }
 
-    // Validation địa chỉ cơ bản
-    if (address.length < 10) {
+    // Validation địa chỉ
+    if (address.length < 6) {
         distanceInfo.style.display = "block";
-        distanceText.innerHTML = '<span style="color: #f59e0b;">⚠️ Vui lòng nhập địa chỉ chi tiết hơn (tối thiểu 10 ký tự)</span>';
-        shippingFeeSpan.textContent = "";
+        distanceText.innerHTML = `
+            <div class="distance-warning">
+                ⚠️ Vui lòng nhập địa chỉ chi tiết hơn (ít nhất 6 ký tự)
+                <br><small>💡 VD: 50B Định Công, Hoàng Mai</small>
+            </div>
+        `;
+        shippingFeeSpan.textContent = '';
         return;
     }
 
-    // Hiển thị loading với animation
+    // Hiển thị loading
     distanceInfo.style.display = "block";
     distanceText.innerHTML = `
-        <span class="loading-text">📍 Đang tính khoảng cách bằng Google Maps...</span>
-        <div class="loading-spinner-small"></div>
+        <div class="distance-loading">
+            <span class="loading-icon">🔍</span>
+            <span class="loading-text">Đang tìm kiếm địa chỉ và tính khoảng cách...</span>
+            <div class="loading-progress"></div>
+        </div>
     `;
     shippingFeeSpan.textContent = "";
 
@@ -438,68 +632,93 @@ async function updateShippingFee() {
         const result = await calculateDistance(address);
 
         if (result && result.distance !== null) {
-            const { distance, duration, foundAddress, method, isApproximate } = result;
-
-            let methodText = "";
-            if (method === "google_distance_matrix") {
-                methodText = "🗺️ Google Maps";
-            } else if (method === "haversine_fallback") {
-                methodText = "📏 Khoảng cách thẳng";
-            } else if (method === "openstreetmap_fallback") {
-                methodText = "🌍 Bản đồ mở (ước tính)";
-            }
-
+            const { distance, foundAddress, method, confidence, isEstimate } = result;
+            
             // Tính phí ship
+            let shippingCost = 0;
             if (distance <= 5) {
-                shippingFee = 0;
-                distanceText.innerHTML = `
-                    <div class="distance-result success">
-                        <strong>📍 Khoảng cách: ${distance.toFixed(1)}km</strong>
-                        ${duration ? `<br><small>⏱️ Thời gian: ~${Math.round(duration)} phút</small>` : ""}
-                        <br><small class="method-info">${methodText}</small>
-                    </div>
-                `;
-                shippingFeeSpan.innerHTML = '<span style="color: #10b981; font-weight: bold;">🎉 Miễn phí giao hàng!</span>';
+                shippingCost = 0;
             } else {
-                shippingFee = Math.ceil(distance - 5) * 5000;
-                distanceText.innerHTML = `
-                    <div class="distance-result">
-                        <strong>📍 Khoảng cách: ${distance.toFixed(1)}km</strong>
-                        ${duration ? `<br><small>⏱️ Thời gian: ~${Math.round(duration)} phút</small>` : ""}
-                        <br><small class="method-info">${methodText}</small>
-                    </div>
-                `;
-                shippingFeeSpan.innerHTML = `<span style="color: #f59e0b; font-weight: bold;">🚚 Phí ship: ${shippingFee.toLocaleString("vi-VN")}đ</span>`;
+                shippingCost = Math.ceil(distance - 5) * 5000;
             }
-
-            // Hiển thị địa chỉ được tìm thấy nếu khác nhiều với input
-            if (foundAddress && foundAddress.toLowerCase() !== address.toLowerCase()) {
-                distanceText.innerHTML += `
-                    <div class="found-address">
-                        <small style="color: #666; font-style: italic;">
-                            📍 Địa chỉ tìm thấy: ${foundAddress}
+            
+            shippingFee = shippingCost;
+            
+            // Xác định icon và text cho method
+            const methodInfo = {
+                'exact_search': { icon: '🎯', text: 'Tìm kiếm chính xác' },
+                'bounded_search': { icon: '🗺️', text: 'Tìm kiếm trong Hà Nội' },
+                'keyword_search': { icon: '🔍', text: 'Tìm kiếm từ khóa' },
+                'location_estimate': { icon: '📍', text: 'Ước tính theo khu vực' },
+                'default_estimate': { icon: '⚖️', text: 'Ước tính mặc định' }
+            };
+            
+            const methodData = methodInfo[method] || { icon: '🔍', text: 'Tìm kiếm' };
+            
+            // Hiển thị kết quả
+            distanceText.innerHTML = `
+                <div class="distance-result ${shippingCost === 0 ? 'free-shipping' : ''}">
+                    <div class="distance-main">
+                        <strong>📍 Khoảng cách: ${distance.toFixed(1)}km</strong>
+                        ${isEstimate ? ' <span class="estimate-badge">Ước tính</span>' : ''}
+                    </div>
+                    <div class="distance-meta">
+                        <small class="confidence">
+                            ${methodData.icon} ${methodData.text} 
+                            | 🎯 Độ tin cậy: ${Math.round(confidence * 100)}%
                         </small>
                     </div>
+                    ${foundAddress && foundAddress !== `Ước tính cho khu vực ${address}` ? `
+                        <div class="found-address">
+                            <small>📍 Tìm thấy: ${foundAddress}</small>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            if (shippingCost === 0) {
+                shippingFeeSpan.innerHTML = `
+                    <span class="free-shipping-text">
+                        🎉 Miễn phí giao hàng!
+                    </span>
+                `;
+            } else {
+                shippingFeeSpan.innerHTML = `
+                    <span class="shipping-fee-text">
+                        🚚 Phí ship: ${shippingCost.toLocaleString("vi-VN")}đ
+                        <small>(5.000đ/km sau 5km đầu)</small>
+                    </span>
                 `;
             }
+            
         } else {
-            throw new Error("Unable to calculate distance");
+            throw new Error('Không thể tính khoảng cách');
         }
     } catch (error) {
-        console.error("Distance calculation failed:", error);
-
+        console.error('❌ Lỗi tính khoảng cách:', error);
+        
         distanceText.innerHTML = `
             <div class="distance-error">
-                <span style="color: #ef4444;">❌ Không thể tính khoảng cách</span>
-                <br><small style="color: #666;">
-                    Vui lòng kiểm tra lại địa chỉ hoặc liên hệ với chúng tôi để được hỗ trợ
-                </small>
-                <br><small style="color: #888;">
-                    💡 Gợi ý: Nhập đầy đủ số nhà, tên đường, quận/huyện
-                </small>
+                <div class="error-main">❌ Không thể tìm thấy địa chỉ chính xác</div>
+                <div class="error-help">
+                    💡 <strong>Thử cải thiện:</strong>
+                    <ul>
+                        <li>Thêm số nhà cụ thể (VD: "50B" thay vì chỉ "Định Công")</li>
+                        <li>Ghi rõ tên đường/phố (VD: "Đường Định Công")</li>
+                        <li>Thêm tên quận (VD: "Hoàng Mai", "Hai Bà Trưng")</li>
+                        <li>Sử dụng tên địa điểm nổi tiếng gần đó</li>
+                    </ul>
+                </div>
+                <div class="error-contact">
+                    📞 Hoặc liên hệ: <strong>0123-456-789</strong> để được tư vấn
+                </div>
             </div>
         `;
-        shippingFeeSpan.innerHTML = '<span style="color: #666;">Phí ship sẽ được xác nhận khi liên hệ</span>';
+        shippingFeeSpan.innerHTML = `
+            <span class="manual-shipping">
+                📋 Phí ship sẽ được xác nhận qua điện thoại
+            </span>
+        `;
         shippingFee = 0;
     }
 
@@ -852,7 +1071,7 @@ function updateVietQR(amount) {
         const ddMMyy = now.getDate().toString().padStart(2, "0") + (now.getMonth() + 1).toString().padStart(2, "0") + now.getFullYear().toString().slice(-2);
         // Kết quả: "170625" nếu là ngày 17/06/2025
 
-        const orderId = "MHX2025" + ddMMyy;
+        const orderId = "MHX2025_" + ddMMyy;
         qrContent.textContent = `${orderId}`;
 
         // Tạo URL VietQR

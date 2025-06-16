@@ -27,7 +27,7 @@ const discountCodes = {
         type: "shipping",
         value: 100,
         maxDiscount: 50000,
-        minOrder: 150000,
+        minOrder: 100000,
         description: "Miễn phí ship cho đơn từ 150k",
     },
 };
@@ -814,9 +814,9 @@ function updatePaymentSummary() {
 
     // Hiển thị thông báo giảm giá cho đơn hàng >= 200k
     const discountAlert = document.getElementById("discountAlert");
-    if (subtotal >= 200000 && !appliedDiscountCode) {
+    if (subtotal >= 0 && !appliedDiscountCode) {
         discountAlert.style.display = "block";
-    } else if (subtotal < 200000) {
+    } else if (subtotal < 0) {
         discountAlert.style.display = "none";
     }
 
