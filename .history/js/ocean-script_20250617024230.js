@@ -269,7 +269,7 @@ function updatePaymentSummary() {
 
     // Cập nhật các phần tử hiển thị
     document.getElementById("subtotal").textContent = subtotal.toLocaleString("vi-VN") + " VND";
-    document.getElementById("shippingFeeDisplay").textContent = "freeship bán kính 5km đầu quanh Bách Khoa, sau 5km đầu là 5k mỗi 1km";
+    document.getElementById("shippingFeeDisplay").textContent = " freeship bán kính 5km đầu quanh Bách Khoa, sau 5km đầu là 5k mỗi 1km";
 
     // Xử lý hiển thị giảm giá
     const discountRow = document.getElementById("discountRow");
