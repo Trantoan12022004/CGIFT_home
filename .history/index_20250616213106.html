@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- site metas -->
+    <title>🌊 Ocean Summer Shop - Đặc sản mùa hè</title>
+    <meta name="keywords" content="mùa hè, đồ uống, combo, ocean, biển cả">
+    <meta name="description" content="Cửa hàng đặc sản mùa hè với theme xanh biển cả tươi mát">
+    <meta name="author" content="">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <!-- style css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Ocean Summer theme -->
+    <link rel="stylesheet" type="text/css" href="css/ocean-summer-theme.css">
+    <!-- Responsive-->
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- fevicon -->
+    <link rel="icon" href="images/fevicon.png" type="image/gif" />
+    <!-- Custom fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- ===== HEADER MÙA HÈ ===== -->
+    <div class="ocean-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="main-title">🌊 OCEAN SUMMER SHOP 🏖️</h1>
+                <p class="main-subtitle">Đặc sản mùa hè tươi mát - Hương vị biển cả trong từng món ăn!</p>
+                
+                <div class="summer-features">
+                    <div class="feature-item">
+                        <div style="font-size: 2rem;">🧊</div>
+                        <div>Mát lạnh</div>
+                    </div>
+                    <div class="feature-item">
+                        <div style="font-size: 2rem;">🍹</div>
+                        <div>Thơm ngon</div>
+                    </div>
+                    <div class="feature-item">
+                        <div style="font-size: 2rem;">💰</div>
+                        <div>Ưu đãi</div>
+                    </div>
+                    <div class="feature-item">
+                        <div style="font-size: 2rem;">🚚</div>
+                        <div>Giao nhanh</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PRODUCTS SECTION ===== -->
+    <div id="sanpham" class="layout_padding">
+        <div class="container">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h2 class="filter-title">🏖️ KHÁM PHÁ SẢN PHẨM MÙA HÈ</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterProducts('all')">
+                        🌊 Tất cả
+                    </button>
+                    <button class="filter-btn" onclick="filterProducts('bestsale')">
+                        🔥 Best Sale
+                    </button>
+                    <button class="filter-btn" onclick="filterProducts('combo')">
+                        🎁 Combo
+                    </button>
+                    <button class="filter-btn" onclick="filterProducts('drink')">
+                        🥤 Giải khát
+                    </button>
+                    <button class="filter-btn" onclick="filterProducts('food')">
+                        🍰 Giải đói
+                    </button>
+                </div>
+            </div>
+
+            <!-- Products Container -->
+            <div class="products-container">
+                <div class="products-grid">
+                    <!-- Sản phẩm sẽ được tạo động bởi JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== THANH TOÁN SECTION ===== -->
+    <div id="thanhtoan" class="checkout-section">
+        <div class="container">
+            <div class="checkout-container">
+                <h2 class="checkout-title">🛒 THANH TOÁN ĐƠN HÀNG</h2>
+                
+                <div class="cart-section">
+                    <h3 class="cart-title">🌊 Giỏ hàng của bạn</h3>
+                    <ul id="cartItems" class="cart-items-list">
+                        <li class="empty-cart">🌊 Giỏ hàng trống - Hãy thêm sản phẩm yêu thích!</li>
+                    </ul>
+                </div>
+
+                <form id="paymentForm" onsubmit="event.preventDefault(); submitOrder();">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="fullName">👤 Họ và tên *</label>
+                                <input type="text" id="fullName" class="form-input" required placeholder="Nhập họ tên đầy đủ">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="phone">📱 Số điện thoại *</label>
+                                <input type="tel" id="phone" class="form-input" required placeholder="Nhập số điện thoại">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="address">📍 Địa chỉ giao hàng *</label>
+                        <input type="text" id="address" class="form-input" required placeholder="Nhập địa chỉ chi tiết">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="paymentMethod">💳 Phương thức thanh toán *</label>
+                                <select id="paymentMethod" class="form-select" required>
+                                    <option value="">Chọn phương thức</option>
+                                    <option value="cod">💵 Thanh toán khi nhận hàng (COD)</option>
+                                    <option value="bank">🏦 Chuyển khoản ngân hàng</option>
+                                    <option value="momo">📱 Ví MoMo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="totalAmount">💰 Tổng tiền</label>
+                                <input type="text" id="totalAmount" class="form-input" readonly value="0 VND">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="note">📝 Ghi chú (tùy chọn)</label>
+                        <textarea id="note" class="form-input" rows="3" placeholder="Ghi chú đặc biệt về đơn hàng..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        🌊 XÁC NHẬN ĐẶT HÀNG
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/ocean-script.js"></script>
+
+    <script>
+        // Smooth scroll animation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add floating elements
+            const floatingElements = ['🐠', '🐟', '🦑', '🌊', '🏖️'];
+            floatingElements.forEach((element, index) => {
+                const floating = document.createElement('div');
+                floating.textContent = element;
+                floating.style.cssText = `
+                    position: fixed;
+                    font-size: 2rem;
+                    opacity: 0.1;
+                    pointer-events: none;
+                    z-index: 1;
+                    animation: float${index % 3 + 1} ${6 + index}s ease-in-out infinite;
+                    top: ${20 + index * 15}%;
+                    left: ${5 + index * 20}%;
+                `;
+                document.body.appendChild(floating);
+            });
+        });
+    </script>
+</body>
+</html>

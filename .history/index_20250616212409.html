@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>Giftshop</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <!-- Summer theme -->
+      <link rel="stylesheet" type="text/css" href="css/summer-theme.css">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="css/responsive.css">
+      <!-- fevicon -->
+      <link rel="icon" href="images/fevicon.png" type="image/gif" />
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <!-- owl stylesheets --> 
+      <link rel="stylesheet" href="css/owl.carousel.min.css">
+      <link rel="stylesheet" href="css/owl.theme.default.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+   </head>
+   <body>
+
+         <!-- Floating summer elements -->
+<div class="floating-element">🌞</div>
+<div class="floating-element">🏖️</div>
+<div class="floating-element">🌊</div>
+
+         <!-- gifts section start -->
+         <div id="sanpham" class="gifts_section layout_padding">
+            <div class="container">
+               <h1 class="ourgifts_text">🌞 ĐẶC SẢN MÙA HÈ SIÊU NGON 🌊</h1>
+               <p class="lorem_text">Mát lạnh, tươi ngon - Hoàn hảo cho những ngày hè oi ả! Combo đặc biệt với giá cực ưu đãi 🏖️</p>
+               <div id="target_section" class="gifts_section_2">
+                  <div class="row">
+                     <!-- Sản phẩm sẽ được tạo động bởi JavaScript -->
+                  </div>
+                  <div class="red_bt"><a href="#target_section">🛒 Đặt nhiều sản phẩm cùng lúc để được ưu đãi tốt nhất!</a></div>
+               </div>
+            </div>
+         </div>
+         <!-- gifts section end -->
+
+         <!-- Phần thanh toán mới -->
+         <div id="thanhtoan" class="shop_section_start layout_padding">
+            <div class="container">
+               <div class="payment-container">
+                  <h2 class="payment-title">🏖️ THANH TOÁN ĐƠN HÀNG MÙA HÈ 🌞</h2>
+                  
+                  <div class="cart-items-container">
+                     <h3 class="cart-items-title">🛒 Giỏ hàng của bạn</h3>
+                     <ul id="cartItems" class="cart-items-list">
+                        <!-- Cart items sẽ được tạo động -->
+                     </ul>
+                  </div>
+
+                  <form id="paymentForm" onsubmit="event.preventDefault(); submitOrder();">
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label class="form-label" for="fullName">👤 Họ và tên *</label>
+                              <input type="text" id="fullName" class="form-input" required placeholder="Nhập họ tên đầy đủ">
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label class="form-label" for="phone">📱 Số điện thoại *</label>
+                              <input type="tel" id="phone" class="form-input" required placeholder="Nhập số điện thoại">
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="form-group">
+                        <label class="form-label" for="address">📍 Địa chỉ giao hàng *</label>
+                        <input type="text" id="address" class="form-input" required placeholder="Nhập địa chỉ chi tiết">
+                     </div>
+
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label class="form-label" for="paymentMethod">💳 Phương thức thanh toán *</label>
+                              <select id="paymentMethod" class="form-select" required>
+                                 <option value="">Chọn phương thức</option>
+                                 <option value="cod">💵 Thanh toán khi nhận hàng (COD)</option>
+                                 <option value="bank">🏦 Chuyển khoản ngân hàng</option>
+                                 <option value="momo">📱 Ví MoMo</option>
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group">
+                              <label class="form-label" for="totalAmount">💰 Tổng tiền</label>
+                              <input type="text" id="totalAmount" class="form-input" readonly>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="form-group">
+                        <label class="form-label" for="note">📝 Ghi chú (tùy chọn)</label>
+                        <textarea id="note" class="form-input" rows="3" placeholder="Ghi chú đặc biệt về đơn hàng..."></textarea>
+                     </div>
+
+                     <button type="submit" class="submit-btn" onclick="submitOrder()">
+                        🌞 XÁC NHẬN ĐẶT HÀNG MÙA HÈ 🌊
+                     </button>
+                  </form>
+               </div>
+            </div>
+         </div>
+         
+
+         <!-- about section start -->
+         <div id="about" class="container">
+            <div class="about_section layout_padding">
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="about_taital">
+                        <h1 class="about_text">Mục tiêu của CGIFT</h1>
+                        <p class="true_text">Chúng mình là fanpage gây quỹ chính thức của "Đội tình nguyện Các chương trình Chất lượng cao CTES". Chúng mình sẽ dùng số tiền kiếm được để lan tỏa những điều tốt đẹp đến tất cả mọi người.</p>
+                        <div class="redmore_bt"><a href="#">Tìm hiểu thêm</a></div>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class=""><img src="images/img-3.png"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- about section end -->
+         
+         <!-- shop section start -->
+
+         <!-- shop section end -->
+      </div>
+      <!-- section footer start -->
+
+     
+      <!-- section footer end -->
+      <!-- copyright section start -->
+      <div class="copyright_section">
+         <div class="container">
+            <p class="copyright"><a href="https://www.facebook.com/cgift.traoguiyeuthuong">C-GIFT Trao gửi yêu thương đến mọi nhà</a></p>
+         </div>
+      </div>
+      <!-- Javascript files-->
+      <script src="js/jquery.min.js"></script>
+      <script src="js/popper.min.js"></script>
+      <script src="js/bootstrap.bundle.min.js"></script>
+      <script src="js/jquery-3.0.0.min.js"></script>
+      <script src="js/plugin.js"></script>
+      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="js/custom.js"></script>
+      <script src="js/owl.carousel.js"></script>
+      <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+      
+      <script>
+         $(document).ready(function(){
+         $(".fancybox").fancybox({
+            openEffect: "none",
+            closeEffect: "none"
+            });
+            
+            $(".zoom").hover(function(){
+            
+            $(this).addClass('transition');
+            }, function(){
+            
+            $(this).removeClass('transition');
+            });
+            });
+            
+      </script> 
+      <script>
+         function openNav() {
+         document.getElementById("myNav").style.width = "100%";
+         }
+         
+         function closeNav() {
+         document.getElementById("myNav").style.width = "0%";
+         }
+      </script>
+
+      <script>
+         // Kích hoạt tính năng vuốt cho carousel
+         $(document).ready(function() {
+         $("#my_Controls").on("touchstart", function(event){
+            var xClick = event.originalEvent.touches[0].pageX;
+            $(this).one("touchmove", function(event){
+               var xMove = event.originalEvent.touches[0].pageX;
+               if( Math.floor(xClick - xMove) > 5 ){ 
+                  $(this).carousel('next');
+               }
+               else if( Math.floor(xClick - xMove) < -5 ){
+                  $(this).carousel('prev');
+               }
+            });
+            $("#my_Controls").on("touchend", function(){
+               $(this).off("touchmove");
+            });
+         });
+         });
+      </script>
+
+      <!-- Load product scripts -->
+      <script src="js/products.js"></script>
+      <script src="js/script.js"></script>
+   </body>
+</html>
