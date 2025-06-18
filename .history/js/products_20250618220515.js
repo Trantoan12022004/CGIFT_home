@@ -68,7 +68,7 @@ const products = [
     },
     {
         id: 7,
-        name: "SỮA CHUA BA VÌ HỘP",
+        name: "SỮA CHUA BA VÌHỘP",
         price: 80000,
         image: "https://raw.githubusercontent.com/Trantoan12022004/host_image_page_anhtonton/main/images/gayquymhx2025/7.png",
         category: "dessert",
