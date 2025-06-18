@@ -9,7 +9,7 @@ const products = [
         description: "Bánh bông lan mềm mịn, thơm phức với lớp sốt ruốc đậm đà, hấp dẫn. Hoàn hảo cho bữa sáng hoặc bữa phụ",
         unit: "cái",
         quantityInputId: "quantity_single1",
-        isPopular: false,
+        isPopular: true,
     },
     {
         id: 2,

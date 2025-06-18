@@ -44,7 +44,7 @@ function categorizeProducts() {
 }
 
 // Hàm hiển thị sản phẩm
-function displayProducts(filter = "bestsale") {
+function displayProducts(filter = "all") {
     const productContainer = document.querySelector(".products-grid");
     if (!productContainer) {
         console.error("Không tìm thấy container sản phẩm");
@@ -52,7 +52,7 @@ function displayProducts(filter = "bestsale") {
     }
 
     const categorizedProducts = categorizeProducts();
-    const productsToShow = categorizedProducts[filter] || categorizedProducts.bestsale;
+    const productsToShow = categorizedProducts[filter] || categorizedProducts.all;
 
     productContainer.innerHTML = "";
 

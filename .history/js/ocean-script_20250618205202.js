@@ -52,7 +52,7 @@ function displayProducts(filter = "bestsale") {
     }
 
     const categorizedProducts = categorizeProducts();
-    const productsToShow = categorizedProducts[filter] || categorizedProducts.bestsale;
+    const productsToShow = categorizedProducts[filter] || categorizedProducts.all;
 
     productContainer.innerHTML = "";
 

@@ -633,8 +633,8 @@ body {
 .filter-btn.active {
     background: var(--ocean-foam);
     transform: translateY(-3px);
-    color: var(--ocean-dark); 
-    /* box-shadow: 0 10px 25px rgba(6, 105, 148, 0.6); */
+    text
+    box-shadow: 0 10px 25px rgba(6, 105, 148, 0.6);
 }
 
 /* ===== PRODUCTS GRID ===== */
