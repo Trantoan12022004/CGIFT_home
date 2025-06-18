@@ -159,7 +159,7 @@ const products = [
         id: 14,
         name: "COMBO YÊU THÍCH 2",
         price: 99000,
-        image: "https://raw.githubusercontent.com/Trantoan12022004/host_image_page_anhtonton/main/images/gayquymhx2025/14.png",
+        image: "https://raw.githubusercontent.com/Trantoan12022004/host_image_page_anhtonton/main/images/gayquymhx2025/2.png",
         category: "combo",
         description: "Combo phổ biến: Bánh sâu gà + Bánh tart trứng + Hoa quả dầm + Sữa chua túi. Cân bằng dinh dưỡng, giá tốt",
         unit: "combo",
