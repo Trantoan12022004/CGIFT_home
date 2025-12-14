@@ -31,11 +31,8 @@
     </head>
     <body>
         <!-- 🎵 Christmas Background Music -->
-        <audio id="christmasMusic" loop>
-            <source
-                src="https://www.bensound.com/bensound-music/bensound-christmastime.mp3"
-                type="audio/mpeg"
-            />
+        <audio id="christmasMusic" loop autoplay>
+            <source src="music/christmas-music.mp3" type="audio/mpeg" />
         </audio>
 
         <!-- Music Control Button -->
@@ -199,7 +196,7 @@
                 </div>
             </div>
 
-            <div class="container">
+            <div class="container" onClick="toggleMusic()">
                 <div class="header-content">
                     <!-- Main Title với hiệu ứng đặc biệt -->
                     <div class="title-wrapper">
@@ -221,7 +218,7 @@
                     </p> -->
 
                     <!-- Features với animation -->
-                    <div class="summer-features">
+                    <!-- <div class="summer-features">
                         <div class="feature-item" data-aos="fade-up" data-aos-delay="100">
                             <div class="feature-icon">
                                 <div class="icon-bg"></div>
@@ -254,20 +251,22 @@
                                 <span class="feature-desc">Giá cực hấp dẫn</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Call to Action Buttons -->
                     <div class="cta-buttons">
                         <button
                             class="cta-btn primary-cta"
-                            onclick="document.getElementById('sanpham').scrollIntoView({behavior: 'smooth'})"
+                            onclick="document.getElementById('sanpham').scrollIntoView({behavior: 'smooth'})";
+                            toggleMusic();
                         >
                             <span class="btn-text">🎁 Khám phá ngay</span>
                             <div class="btn-ripple"></div>
                         </button>
                         <button
                             class="cta-btn secondary-cta"
-                            onclick="document.getElementById('thanhtoan').scrollIntoView({behavior: 'smooth'})"
+                            onclick="document.getElementById('thanhtoan').scrollIntoView({behavior: 'smooth'})";
+                            toggleMusic();
                         >
                             <span class="btn-text">🎄 Ưu đãi đặc biệt</span>
                             <div class="btn-ripple"></div>
@@ -306,27 +305,30 @@
                 <div class="filter-section">
                     <h2 class="filter-title">🎄 KHÁM PHÁ SẢN PHẨM GIÁNG SINH</h2>
                     <div class="filter-buttons">
-                        <button class="filter-btn" onclick="filterProducts('all')">
+                        <button class="filter-btn" onclick="filterProducts('all')";
+                            toggleMusic();>
                             🎄 Tất cả
                         </button>
-                        <button class="filter-btn active" onclick="filterProducts('bestsale')">
+                        <button class="filter-btn active" onclick="filterProducts('bestsale')";
+                            toggleMusic();>
                             ⭐ Best Sale
                         </button>
-                        <button class="filter-btn" onclick="filterProducts('combo')">
+                        <button class="filter-btn" onclick="filterProducts('combo')";
+                            toggleMusic();>
                             🎁 Combo
                         </button>
                         <!-- <button class="filter-btn" onclick="filterProducts('drink')">
                             🥤 Giải khát
                         </button> -->
-                        <button class="filter-btn" onclick="filterProducts('food')">
+                        <!-- <button class="filter-btn" onclick="filterProducts('food')">
                             🍰 Đồ ăn
-                        </button>
+                        </button> -->
                     </div>
                 </div>
 
                 <!-- Products Container -->
                 <div class="products-container">
-                    <div class="products-grid">
+                    <div class="products-grid" onClick="toggleMusic()">
                         <!-- Sản phẩm sẽ được tạo động bởi JavaScript -->
                     </div>
                 </div>
@@ -550,7 +552,7 @@
 
         <script>
             // Auto-play Christmas music on page load
-            let musicPlaying = false;
+            let musicPlaying = true; // Set to true by default
             const music = document.getElementById("christmasMusic");
 
             function toggleMusic() {
@@ -566,20 +568,35 @@
                 }
             }
 
-            // Try to auto-play music (some browsers require user interaction)
-            document.addEventListener("DOMContentLoaded", function () {
-                // Attempt to play music
-                music
-                    .play()
-                    .then(() => {
+            // Auto-play music when page loads - Always attempt to play
+            window.addEventListener("load", function () {
+                music.volume = 0.5; // Set volume to 50%
+
+                // Try to play immediately
+                const playPromise = music.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // Autoplay started successfully
                         musicPlaying = true;
                         document.getElementById("musicIcon").textContent = "🔊";
-                    })
-                    .catch((error) => {
-                        console.log("Auto-play prevented. User needs to click play.");
-                        musicPlaying = false;
-                        document.getElementById("musicIcon").textContent = "🔇";
+                    }).catch(() => {
+                        // Autoplay was prevented, play on first user interaction
+                        const playOnInteraction = function() {
+                            music.play();
+                            musicPlaying = true;
+                            document.getElementById("musicIcon").textContent = "🔊";
+                            // Remove all listeners after first play
+                            document.removeEventListener('click', playOnInteraction);
+                            document.removeEventListener('touchstart', playOnInteraction);
+                            document.removeEventListener('keydown', playOnInteraction);
+                        };
+
+                        document.addEventListener('click', playOnInteraction);
+                        document.addEventListener('touchstart', playOnInteraction);
+                        document.addEventListener('keydown', playOnInteraction);
                     });
+                }
 
                 // Add floating elements - Christmas themed
                 const floatingElements = ["🎄", "🎅", "🎁", "⛄", "❄️"];
